@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
 
+
 public class ServerManager : MonoBehaviourPunCallbacks
 {
     public static ServerManager Instance;
+
+    [SerializeField] private GameObject roomsPanel;
+    [SerializeField] private GameObject singleRoomPanel;
 
     [SerializeField] private TMP_Text numberText;
 
@@ -27,9 +32,12 @@ public class ServerManager : MonoBehaviourPunCallbacks
             selectedServer = value;
         }
     }
-   
+
+    [Header("RoomUI")]
+    [SerializeField] private List<TMP_Text> PlayerTexts;
+
     private void Awake()
-    {
+    {        
         Debug.Log("cheese");
         if(Instance == null)
         {
@@ -37,6 +45,9 @@ public class ServerManager : MonoBehaviourPunCallbacks
         }
         else
         {
+            Debug.LogError("Multiple " + this.name + " detected! \n"
+                + "Instance on GameObject: " + gameObject.name + " has been removed.");
+
             Destroy(this.gameObject);
         }
         enabledServerUIs = new List<ServerUI>();
@@ -48,7 +59,6 @@ public class ServerManager : MonoBehaviourPunCallbacks
 
         enabledServerUIs.Add(_serverUI);
         numberText.text = "Servers: " + enabledServerUIs.Count + " / 5";
-        _serverUI.UpdateText();
     }
     public void UnSubscribe (ServerUI _serverUI)
     {
@@ -60,64 +70,87 @@ public class ServerManager : MonoBehaviourPunCallbacks
     }
     public void HostServer()
     {
-
-        if(hostedServerID > 0)
+        if (PhotonNetwork.OfflineMode)
         {
-            Debug.Log("Already Hosting Server!");
+            PhotonNetwork.CreateRoom("OfflineMode123");
+            roomsPanel.SetActive(false);
+            singleRoomPanel.SetActive(true);
             return;
         }
 
-        if (enabledServerUIs.Count == 5)
+        hostedServerID = GetFreeID();
+        if(hostedServerID == 5)
+        {
             return;
-
-        hostedServerID = GetFreeServerID();
-
-        if (hostedServerID == 0)
-            return;
-
-        allServerUIs[hostedServerID - 1].gameObject.SetActive(true);
-
+        }
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 4;
         roomOptions.IsVisible = true;
-        PhotonNetwork.CreateRoom(hostedServerID.ToString(), roomOptions);
+        PhotonNetwork.CreateRoom(hostedServerID.ToString(), roomOptions,null);
 
+        roomsPanel.SetActive(false);
+        singleRoomPanel.SetActive(true);
     }
 
-    public override void OnJoinedRoom()
+    private int GetFreeID()
     {
-        Debug.Log("FIIIIIIIIIIIRE");
-    }
-    public override void OnCreatedRoom()
-    {
-        allServerUIs[hostedServerID - 1].PlayerCount++;
-    }
-    
-    private int GetFreeServerID()
-    {
-        if(enabledServerUIs.Count == 0)
-        {
-            return 1;
-        }
-
-        for (int i = 0; i < allServerUIs.Count; i ++)
+        for(int i = 0; i < allServerUIs.Count; i++)
         {
             if(!allServerUIs[i].isActiveAndEnabled)
             {
                 return allServerUIs[i].ID;
             }
         }
-        return 0;
+        Debug.Log("All rooms are occupied");
+        return 5;
     }
-    private ServerUI GetServer(int _ID)
+    public void JoinRoom(int id)
     {
-        for (int i = 0; i < allServerUIs.Count; i++)
+        PhotonNetwork.JoinRoom(id.ToString());
+    }
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("JoinedRoom");
+        roomsPanel.SetActive(false);
+        singleRoomPanel.SetActive(true);
+        UpdatePlayerTexts();
+    }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        UpdatePlayerTexts();
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        UpdatePlayerTexts();
+    }
+    private void UpdatePlayerTexts()
+    {
+        int playerCount = PhotonNetwork.CurrentRoom.Players.Count;
+
+        for (int i = 0; i < PlayerTexts.Count; i++)
         {
-            if (allServerUIs[i].ID == _ID)
+            if (i < playerCount)
             {
-                return allServerUIs[i];
+                PlayerTexts[i].text = ("Player " + (i + 1) + ": " + PhotonNetwork.CurrentRoom.GetPlayer(i +1).NickName);
+            }
+            else
+            {
+                PlayerTexts[i].text = ("Player " + (i + 1) + ": NPC ");
             }
         }
-        return null;
+    }
+    public void StartGame()
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            SceneManager.LoadScene(1);
+        }
+    }
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+        singleRoomPanel.SetActive(false);
+        roomsPanel.SetActive(true);
+        RoomManager.Instance.UpdateRoomUIs();
     }
 }

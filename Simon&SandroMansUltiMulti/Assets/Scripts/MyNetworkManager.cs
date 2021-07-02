@@ -7,22 +7,30 @@ using Photon.Realtime;
 
 public class MyNetworkManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private bool startGameOffline;
+ 
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private GameObject serverMenuPanel;
-
+    [SerializeField] private GameObject roomsPanel;
+    
     [Header("UI Elements Menu")]
     [SerializeField] private TMP_InputField nameText;
     [SerializeField] private GameObject missingNameText;
+    
+    //[Header("RoomSettings")]
+    //[SerializeField] private int roomSize = 4;
+    //[SerializeField] private bool isVisible = true;
 
-    [Header("RoomSettings")]
-    [SerializeField] private int roomSize = 4;
-    [SerializeField] private bool isVisible = true;
-    RoomOptions roomOptions;
     private void Awake()
     {
         mainMenuPanel.SetActive(false);
-        serverMenuPanel.SetActive(false);
+        roomsPanel.SetActive(false);
+
+        if (!PhotonNetwork.IsConnected || startGameOffline)
+        {
+            Debug.Log("startinggameoffline"); 
+            PhotonNetwork.OfflineMode = true;
+        }
 
         PhotonNetwork.AutomaticallySyncScene = true;
 
@@ -30,6 +38,16 @@ public class MyNetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("Connecting");
     }
 
+
+    public override void OnConnectedToMaster()
+    {
+        if (!PhotonNetwork.InLobby)
+        {
+            mainMenuPanel.SetActive(true);
+        }
+        Debug.Log("We Are Connected to a Master Server");
+
+    }
     public void JoinLobby()
     {
         if (string.IsNullOrWhiteSpace(nameText.text))
@@ -38,39 +56,15 @@ public class MyNetworkManager : MonoBehaviourPunCallbacks
             return;
         }
 
-        serverMenuPanel.SetActive(true);
+        roomsPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
-
-        PhotonNetwork.JoinRandomRoom();
-
         PhotonNetwork.LocalPlayer.NickName = nameText.text;
+        PhotonNetwork.JoinLobby();
     }
-    public override void OnJoinRandomFailed(short returnCode, string message)
+    public override void OnJoinedLobby()
     {
-        Debug.Log("Couldn't locate opened Room");
-        Debug.Log("Lets create one");
+        // mainMenuPanel.SetActive(true);
 
-        roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = (byte)roomSize;
-        roomOptions.IsVisible = isVisible;
-
-        PhotonNetwork.CreateRoom(string.Empty, roomOptions);
+        Debug.Log("Joined Lobby");
     }
-    public override void OnLeftRoom()
-    {
-        mainMenuPanel.SetActive(true);
-    }
-    public override void OnConnectedToMaster()
-    {
-        mainMenuPanel.SetActive(true);
-        Debug.Log("We Are Connected to a Master Server");
-
-    }
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-        serverMenuPanel.SetActive(false);
-        missingNameText.SetActive(false);
-    }
-
 }

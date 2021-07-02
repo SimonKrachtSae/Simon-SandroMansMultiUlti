@@ -11,6 +11,7 @@ public enum RoomProperties
 }
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+
     [Header("Panels")]
     [SerializeField] private GameObject mainMenuPanel;
     [SerializeField] private GameObject roomPanel;
@@ -27,14 +28,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [SerializeField] private int roomSize = 4;
     [SerializeField] private bool isVisible = true;
 
-    Hashtable roomInformations;
     private void Awake()
     {
         mainMenuPanel.SetActive(false);
         roomPanel.SetActive(false);
 
         PhotonNetwork.AutomaticallySyncScene = true;
-
         PhotonNetwork.ConnectUsingSettings();
         Debug.Log("Connecting");
     }
@@ -81,7 +80,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(string.Empty,roomOptions);
     }
 
-    
 
     public override void OnCreatedRoom()
     {

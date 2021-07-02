@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Realtime;
+using Photon.Pun;
 public class ServerUI : MonoBehaviour
 {
 
@@ -13,7 +15,7 @@ public class ServerUI : MonoBehaviour
         set
         {
             playerCount = value;
-            UpdateText();
+            //UpdateText();
         }
     }
     [SerializeField] private TMP_Text text;
@@ -21,10 +23,11 @@ public class ServerUI : MonoBehaviour
 
     [SerializeField] private int id;
     public int ID { get => id; }
-    public void UpdateText()
+    public void UpdateText(int _playerCount)
     {
-        text.text = "Server: " + ID + " / Players: " +  playerCount;
+        text.text = "Server: " + ID + " / Players: " +  _playerCount;
     }
+    
 
     private void OnEnable()
     {
@@ -37,5 +40,13 @@ public class ServerUI : MonoBehaviour
     public void SetSelectedServer()
     {
         ServerManager.Instance.SelectedServer = ID;
+    }
+    public void JoinServer(int id)
+    {
+        PhotonNetwork.JoinRoom(id.ToString());
+    }
+    public void JoinRoom()
+    {
+        ServerManager.Instance.JoinRoom(id);
     }
 }
