@@ -304,6 +304,8 @@ namespace Photon.Pun
         /// <remarks>
         /// LoadBalancing Client is not aware of the Photon Offline Mode, so never use PhotonNetwork.NetworkingClient.CurrentRoom will be null if you are using OffLine Mode, while PhotonNetwork.CurrentRoom will be set when offlineMode is true
         /// </remarks>
+        /// 
+
         public static Room CurrentRoom
         {
             get
@@ -2713,6 +2715,8 @@ namespace Photon.Pun
         /// - GameObject can be destroyed while client is not in a room.
         /// </remarks>
         /// <returns>Nothing. Check error debug log for any issues.</returns>
+        /// 
+         
         public static void Destroy(PhotonView targetView)
         {
             if (targetView != null)

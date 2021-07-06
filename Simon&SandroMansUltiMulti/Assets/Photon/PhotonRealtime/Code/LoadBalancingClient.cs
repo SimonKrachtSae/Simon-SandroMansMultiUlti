@@ -548,7 +548,6 @@ namespace Photon.Realtime
         /// <summary>Wraps up the target objects for a group of callbacks, so they can be called conveniently.</summary>
         /// <remarks>By using Add or Remove, objects can "subscribe" or "unsubscribe" for this group  of callbacks.</remarks>
         internal ErrorInfoCallbacksContainer ErrorInfoCallbackTargets;
-
         /// <summary>Summarizes (aggregates) the different causes for disconnects of a client.</summary>
         /// <remarks>
         /// A disconnect can be caused by: errors in the network connection or some vital operation failing
@@ -568,7 +567,7 @@ namespace Photon.Realtime
         }
 
         /// <summary>The lobby this client currently uses. Defined when joining a lobby or creating rooms</summary>
-        public TypedLobby CurrentLobby { get; internal set; }
+        public TypedLobby CurrentLobby { get; set; }
 
         /// <summary>
         /// If enabled, the client will get a list of available lobbies from the Master Server.
@@ -768,6 +767,7 @@ namespace Photon.Realtime
             this.LobbyCallbackTargets = new LobbyCallbacksContainer(this);
             this.WebRpcCallbackTargets = new WebRpcCallbacksContainer(this);
             this.ErrorInfoCallbackTargets = new ErrorInfoCallbacksContainer(this);
+            
 
             this.LoadBalancingPeer = new LoadBalancingPeer(this, protocol);
             this.LoadBalancingPeer.OnDisconnectMessage += this.OnDisconnectMessageReceived;
@@ -3892,7 +3892,6 @@ namespace Photon.Realtime
         /// </remarks>
         void OnMasterClientSwitched(Player newMasterClient);
     }
-
 
     /// <summary>
     /// Event callback for the Realtime Api. Covers events from the server and those sent by clients via OpRaiseEvent.
