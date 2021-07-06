@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 
-public class PlayerManager : MonoBehaviourPun
+public class PlayerManager : MonoBehaviourPun, IPunObservable
 {
     //TeamA
     private PlayerType Player1;
@@ -24,6 +24,7 @@ public class PlayerManager : MonoBehaviourPun
     List<PlayerType> playerTypes;
     RoomPlayerSettings settings;
     private List<string> playerNames;
+
 
     private void Start()
     {
@@ -49,6 +50,8 @@ public class PlayerManager : MonoBehaviourPun
         playerTxts.Add(player3Txt);
         playerTxts.Add(player4Txt);
     }
+
+    
 
     public void SetPlayerType(int id)
     {
@@ -81,6 +84,8 @@ public class PlayerManager : MonoBehaviourPun
             }
         }
     }
+
+    
     public void OnUIClicked()
     {
         photonView.RPC("DrawUIs", RpcTarget.All, settings);
@@ -95,6 +100,13 @@ public class PlayerManager : MonoBehaviourPun
         player3Txt.text = settings.Player3Name;
         player4Txt.text = settings.Player4Name;
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    
 }
 public class RoomPlayerSettings
 {
