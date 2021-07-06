@@ -53,10 +53,10 @@ public class PlayerManager : MonoBehaviourPun
             {
                 if(i != id)
                 {
-                    if(playerTxts[id].text == PhotonNetwork.LocalPlayer.NickName)
+                    if(playerTxts[i].text == PhotonNetwork.LocalPlayer.NickName)
                     {
-                        playerTypes[id] = PlayerType.NPC;
-                        playerTxts[id].text = "NPC";
+                        playerTypes[i] = PlayerType.NPC;
+                        playerTxts[i].text = "NPC";
                     }
                 }
             }
