@@ -207,8 +207,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1070574658}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetPlayerType
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetPlayerNumber
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -474,8 +474,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1070574658}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetPlayerType
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetPlayerNumber
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1250,13 +1250,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1070574657}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c726470bb97b33c4aa723e354272b68c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1797dcea25e30fb41be5fe8a963e5a72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1Txt: {fileID: 1375575168}
-  player2Txt: {fileID: 1780912927}
-  player3Txt: {fileID: 834844057}
-  player4Txt: {fileID: 1048752677}
+  playerTxts:
+  - {fileID: 1375575168}
+  - {fileID: 1780912927}
+  - {fileID: 834844057}
+  - {fileID: 1048752677}
 --- !u!4 &1070574659
 Transform:
   m_ObjectHideFlags: 0
@@ -1355,8 +1356,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1070574658}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetPlayerType
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetPlayerNumber
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1994,8 +1995,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1070574658}
-        m_TargetAssemblyTypeName: PlayerManager, Assembly-CSharp
-        m_MethodName: SetPlayerType
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: SetPlayerNumber
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
