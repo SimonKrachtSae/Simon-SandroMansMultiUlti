@@ -64,22 +64,22 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        //for(int i = 0; i < 4; i++)
-        //{
-        //    if(playerTxts[i].text != "NPC")
-        //    {
-        //        for(int j = 0; j < activePlayers.Count; j++)
-        //        {
-        //            if(playerTxts[i].text == activePlayers[j].Name)
-        //            {
-        //                if(activePlayers[j].Number != i)
-        //                {
-        //                    playerTxts[i].text = "NPC";
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+        for(int i = 0; i < 4; i++)
+        {
+            if(playerTxts[i].text != "NPC")
+            {
+                for(int j = 0; j < activePlayers.Count; j++)
+                {
+                    if(playerTxts[i].text == activePlayers[j].Name)
+                    {
+                        if(activePlayers[j].Number != i)
+                        {
+                            playerTxts[i].text = "NPC";
+                        }
+                    }
+                }
+            }
+        }
     }
     public void SetAtivePlayer(ActivePlayer _activePlayer)
     {

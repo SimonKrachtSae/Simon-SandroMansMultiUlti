@@ -18,7 +18,7 @@ public class ActivePlayer : MonoBehaviourPun, IPunObservable
 
         if(photonView.IsMine)
         {
-            photonView.RPC("SetPlayerName", RpcTarget.All);
+            photonView.RPC("SetPlayerName", RpcTarget.All,PhotonNetwork.LocalPlayer.NickName);
             GameManager.Instance.SetAtivePlayer(this);
         }
             GameManager.Instance.Subscribe(this);
@@ -33,9 +33,9 @@ public class ActivePlayer : MonoBehaviourPun, IPunObservable
         plNumber = _number;
     }
     [PunRPC]
-    public void SetPlayerName()
+    public void SetPlayerName(string _name)
     {
-        plName = PhotonNetwork.LocalPlayer.NickName;
+        plName = _name;
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
