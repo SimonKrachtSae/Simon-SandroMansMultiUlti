@@ -31,6 +31,7 @@ public class ActivePlayer : MonoBehaviourPun, IPunObservable
     public void SetPlayerNumber(int _number)
     {
         plNumber = _number;
+        GameManager.Instance.UpdateTeamSelectUIs();
     }
     [PunRPC]
     public void SetPlayerName(string _name)

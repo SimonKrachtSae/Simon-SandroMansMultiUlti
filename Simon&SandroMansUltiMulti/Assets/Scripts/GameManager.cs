@@ -48,36 +48,24 @@ public class GameManager : MonoBehaviour
     {
         activePlayers.Add(activePlayer);
     }
-    private void Update()
+    public void UpdateTeamSelectUIs()
     {
 
         for (int i = 0; i < 4; i++)
         {
-            if(playerTxts[i].text == "NPC")
+            bool isNPC = true;
+            for(int j = 0; j < activePlayers.Count; j++)
             {
-                for(int j = 0; j < activePlayers.Count; j++)
+                if (i == activePlayers[j].Number)
                 {
-                    if (i == activePlayers[j].Number)
-                    {
-                        playerTxts[i].text = activePlayers[j].Name;
-                    }
+                    playerTxts[i].text = activePlayers[j].Name;
+                    isNPC = false;
+                    break;
                 }
             }
-        }
-        for(int i = 0; i < 4; i++)
-        {
-            if(playerTxts[i].text != "NPC")
+            if(isNPC)
             {
-                for(int j = 0; j < activePlayers.Count; j++)
-                {
-                    if(playerTxts[i].text == activePlayers[j].Name)
-                    {
-                        if(activePlayers[j].Number != i)
-                        {
-                            playerTxts[i].text = "NPC";
-                        }
-                    }
-                }
+                playerTxts[i].text = "NPC";
             }
         }
     }
