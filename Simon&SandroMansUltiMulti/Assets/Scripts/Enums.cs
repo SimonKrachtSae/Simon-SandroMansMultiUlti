@@ -30,4 +30,5 @@ public enum PlayerType
 {
     Player,
     NPC
+
 }
