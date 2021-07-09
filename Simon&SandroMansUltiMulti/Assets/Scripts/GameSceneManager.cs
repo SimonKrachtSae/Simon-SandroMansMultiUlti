@@ -29,6 +29,7 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LocalPlayer.NickName = "OfflineJeff";
         uiManager.TeamSelectPanel.SetActive(true);
+        PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {

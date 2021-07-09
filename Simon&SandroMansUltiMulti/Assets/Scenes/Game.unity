@@ -1736,8 +1736,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1070574659}
-  - component: {fileID: 1070574658}
-  - component: {fileID: 1070574660}
   - component: {fileID: 1070574662}
   - component: {fileID: 1070574661}
   m_Layer: 0
@@ -1747,23 +1745,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1070574658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070574657}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1797dcea25e30fb41be5fe8a963e5a72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoints:
-  - {fileID: 1630610144}
-  - {fileID: 233068952}
-  - {fileID: 2090907151}
-  - {fileID: 1919634292}
 --- !u!4 &1070574659
 Transform:
   m_ObjectHideFlags: 0
@@ -1778,28 +1759,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1070574660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1070574657}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52edafe98205f4642b4f047229179224, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTxts:
-  - {fileID: 1375575168}
-  - {fileID: 1780912927}
-  - {fileID: 834844057}
-  - {fileID: 1048752677}
-  teamSelectPanel: {fileID: 770750935}
-  startGameButton: {fileID: 1011795594}
-  infoText: {fileID: 221714192}
-  gameRoom: {fileID: 826409823}
-  mainCam: {fileID: 1697617451}
 --- !u!114 &1070574661
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -73,13 +73,35 @@ public class MyUI_Handler : MonoBehaviour
     }
     private void SpawnPlayers()
     {
-        PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[gameManager.LocalPlayerNumber].position, Quaternion.identity);
+        GameObject player = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[gameManager.LocalPlayerNumber].position, Quaternion.identity);
+        MyPlayer playerScript = player.GetComponent<MyPlayer>();
+
+        if(gameManager.LocalPlayerNumber < 2)
+        {
+            playerScript.SetTeam(Team.A);
+        }
+        else
+        {
+            playerScript.SetTeam(Team.B);
+        }
+
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             for (int i = 0; i < 4; i++)
             {
                 if (playerButtonTexts[i].text == "NPC")
-                    PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
+                {
+                    GameObject NPCobj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
+                    NPC npcScript = NPCobj.GetComponent<NPC>();
+                    if(i < 2)
+                    {
+                        npcScript.SetTeam(Team.A);
+                    }
+                    else
+                    {
+                        npcScript.SetTeam(Team.B);
+                    }
+                }
             }
         }
     }
