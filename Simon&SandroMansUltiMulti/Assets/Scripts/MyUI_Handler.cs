@@ -18,8 +18,6 @@ public class MyUI_Handler : MonoBehaviour
     public GameObject TeamSelectPanel { get => teamSelectPanel; set => teamSelectPanel = value; }
     [SerializeField] private GameObject room;
     [SerializeField] private GameObject mainCam;
-
-    
     
     private void Awake()
     {

@@ -8,7 +8,7 @@ public class PunCallBacks : MonoBehaviourPunCallbacks
 {
     public static PunCallBacks Instance;
 
-    private UIManager uiManager;
+    private NetworkUIManager uiManager;
 
     private List<RoomInfo> roomInfos;
     public List<RoomInfo> RoomInfos { get => roomInfos; set => roomInfos = value; }
@@ -29,7 +29,7 @@ public class PunCallBacks : MonoBehaviourPunCallbacks
  
     public void Start()
     {
-        uiManager = UIManager.Instance;
+        uiManager = NetworkUIManager.Instance;
         uiManager.SetConnectionStatus(ConnectionStatus.Connecting);
 
         roomInfos = new List<RoomInfo>();

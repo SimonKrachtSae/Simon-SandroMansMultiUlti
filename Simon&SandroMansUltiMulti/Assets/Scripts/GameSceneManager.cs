@@ -6,20 +6,35 @@ using Photon.Realtime;
 
 public class GameSceneManager : MonoBehaviourPunCallbacks
 {
-    private MyUI_Handler uiManager;
+    private GameUI_Manager uiManager;
     void Start()
     {
-        uiManager = MyUI_Handler.Instance;
+        uiManager = GameUI_Manager.Instance;
+        if(PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
+        }
+
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.OfflineMode = true;
         }
         else
         {
+            if(PhotonNetwork.LocalPlayer.IsMasterClient)
             PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
+
+            uiManager.SetGameState(GameState.TeamSelection);
         }
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
-        uiManager.StartButton.SetActive(true);
+
+    }
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (uiManager.GetGameState() != GameState.TeamSelection)
+            return;
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            uiManager.StartButton.SetActive(true);
     }
     public override void OnConnectedToMaster()
     {
@@ -28,14 +43,19 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LocalPlayer.NickName = "OfflineJeff";
-        uiManager.TeamSelectPanel.SetActive(true);
+        uiManager.SetGameState(GameState.TeamSelection);
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            uiManager.StartButton.SetActive(true);
+
         PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-    }
-    void Update()
-    {
-        
+        if (uiManager.GetGameState() != GameState.TeamSelection)
+            return;
+
+       // if(PhotonNetwork.LocalPlayer.IsMasterClient)
+       // uiManager.GameManager.RemovePlayerThatLeft();
     }
 }

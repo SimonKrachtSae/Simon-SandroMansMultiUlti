@@ -6,9 +6,9 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour
+public class NetworkUIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static NetworkUIManager Instance;
 
     private PunCallBacks punCallbacks;
     private ConnectionStatus connectionStatus;
@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject startGameButton;
 
     private List<GameObject> panels;
+    NetworkAudioManager audioManager;
     private void Awake()
     {
         if (Instance == null)
@@ -48,6 +49,8 @@ public class UIManager : MonoBehaviour
     }
     public void Start()
     {
+        audioManager = NetworkAudioManager.Instance;
+
         punCallbacks = PunCallBacks.Instance;
         roomInfos = new List<RoomInfo>();
         panels = new List<GameObject>();
@@ -56,6 +59,13 @@ public class UIManager : MonoBehaviour
         panels.Add(inRoomUIs);
         panels.Add(roomSelectionUIs);
         SetConnectionStatus(ConnectionStatus.Connecting);
+    }
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            audioManager.PlayClickSound();
+        }
     }
     public void SetPlayerMessageText(string value)
     {
@@ -77,15 +87,22 @@ public class UIManager : MonoBehaviour
                 playerMessageText.text = "Connecting";
                 break;
             case ConnectionStatus.Connected:
+                playerMessageText.text = "Please Enter a Name";
                 joinLobbyUIs.SetActive(true);
                 break;
             case ConnectionStatus.HostingOrJoiningRoom:
+                playerMessageText.text = "Enter Room Name in Order to Host";
                 hostOrJoinRoomUIs.SetActive(true);
                 break;
             case ConnectionStatus.InRoomSelection:
+                playerMessageText.text = "Select Room To Join";
                 roomSelectionUIs.SetActive(true);
                 break;
             case ConnectionStatus.InRoom:
+                if(!PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    playerMessageText.text = "Waiting for Host to Start Game";
+                }
                 inRoomUIs.SetActive(true);
                 break;
 

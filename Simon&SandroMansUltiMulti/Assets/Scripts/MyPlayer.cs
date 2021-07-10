@@ -24,20 +24,11 @@ public class MyPlayer : MonoBehaviourPun, IPunObservable
         {
             playerCam.SetActive(false);
         }
-        else
-        {
-            MyUI_Handler.Instance.GameManager.LocalPlayer = this;
-        }
-        MyUI_Handler.Instance.GameManager.Subscribe(this);
-        
+
     }
     void Update()
     {
         
-    }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
     }
     public void SetTeam(Team _team)
     {
@@ -55,5 +46,27 @@ public class MyPlayer : MonoBehaviourPun, IPunObservable
         {
             spriteRenderer.color = Color.red;
         }
+    }
+    public void SetID(int _id)
+    {
+        if(_id < 2)
+        {
+            photonView.RPC("RPC_SetID", RpcTarget.All, _id, Team.A, Color.blue);
+        }
+        else
+        {
+            photonView.RPC("RPC_SetID", RpcTarget.All, _id, Team.B, Color.red);
+        }
+    }
+    [PunRPC]
+    public void RPC_SetID(int _id, Team _team, Color _color)
+    {
+        id = _id;
+        team = _team;
+        spriteRenderer.color = _color;
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }

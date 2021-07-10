@@ -1,0 +1,138 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using Photon.Pun;
+using UnityEngine.SceneManagement;
+public class GameUI_Manager : MonoBehaviour
+{
+    public static GameUI_Manager Instance;
+    private GameManager gameManager;
+    public GameManager GameManager { get => gameManager; set => gameManager = value; }
+    private List<GameObject> panels;
+
+    [Header("Team Selection UIs")]
+    [SerializeField] private GameObject teamSelectionPanel;
+    [SerializeField] private List<TMP_Text> teamSelectButtonTexts;
+    [SerializeField] private TMP_Text playerMessageText;
+    [SerializeField] private GameObject startButton;
+    
+    public GameObject StartButton { get => startButton; set => startButton = value; }
+
+    [Header("Room UIs")]
+    [SerializeField] private GameObject roomPanel;
+
+    [Header("Pause Menu UIs")]
+    [SerializeField] private GameObject pauseMenuPanel;
+
+    [Header("Game Over UIs")]
+    [SerializeField] private GameObject gameOverPanel;
+
+
+
+
+    private GameState gameState;
+    public TMP_Text PlayerMessageText { get => playerMessageText; set => playerMessageText = value; }
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
+    private void Start()
+    {
+        panels = new List<GameObject>();
+        panels.Add(teamSelectionPanel);
+        panels.Add(roomPanel);
+        panels.Add(pauseMenuPanel);
+        panels.Add(gameOverPanel);
+        DeactivatePanels();
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            startButton.SetActive(true);
+        }
+    }
+    private void Update()
+    {
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            SetGameState(GameState.Paused);
+        }
+    }
+    private void DeactivatePanels()
+    {
+        playerMessageText.text = "";
+        for(int i = 0; i < panels.Count; i++)
+        {
+            panels[i].SetActive(false);
+        }
+    }
+    public void SetGameState(GameState _gameState)
+    {
+        DeactivatePanels();
+        gameState = _gameState;
+        UpdateUI_Panels();
+    }
+    private void UpdateUI_Panels()
+    {
+        switch(gameState)
+        {
+            case GameState.TeamSelection:
+                playerMessageText.text = "Choose A Team";
+                teamSelectionPanel.SetActive(true);
+                break;
+            case GameState.Running:
+                roomPanel.SetActive(true);
+                break;
+            case GameState.Paused:
+                pauseMenuPanel.SetActive(true);
+                break;
+            case GameState.GameOver:
+                gameOverPanel.SetActive(true);
+                break;
+        }
+    }
+    public void ConfigPlayer(int number)
+    {
+        string localName = PhotonNetwork.LocalPlayer.NickName;
+        gameManager.SetPlayer(localName, number);
+    }
+    public void UpdateTeamSelectUIs()
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            teamSelectButtonTexts[i].text = gameManager.GetPlayers()[i];
+        }
+    }
+    public void StartGame()
+    {
+        if(gameManager.GetAssignedPlayerCount() != PhotonNetwork.CurrentRoom.Players.Count)
+        {
+            playerMessageText.text = "Waiting on Other Players to join Team";
+            return;
+        }
+
+        gameManager.StartGame();
+    }
+    public GameState GetGameState()
+    {
+        return gameState;
+    }
+    public List<TMP_Text> GetTeamSelectionButtonTexts()
+    {
+        return teamSelectButtonTexts;
+    }
+    public void Resume()
+    {
+        SetGameState(GameState.Running);
+    }
+    public void Quit()
+    {
+        SceneManager.LoadScene(0);
+    }
+}

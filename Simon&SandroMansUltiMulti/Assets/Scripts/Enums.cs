@@ -16,7 +16,8 @@ public class Enums : MonoBehaviour
 public enum Team
 {
     A,
-    B
+    B,
+    None
 }
 public enum ConnectionStatus
 {
@@ -30,5 +31,11 @@ public enum PlayerType
 {
     Player,
     NPC
-
+}
+public enum GameState
+{
+    TeamSelection,
+    Running,
+    Paused,
+    GameOver
 }
