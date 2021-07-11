@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCam: {fileID: 7284665250661083899}
+  spriteRenderer: {fileID: 4812762154733243198}
 --- !u!114 &241212478145383536
 MonoBehaviour:
   m_ObjectHideFlags: 0

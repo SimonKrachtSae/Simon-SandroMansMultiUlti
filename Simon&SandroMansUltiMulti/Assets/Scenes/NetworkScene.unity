@@ -3609,7 +3609,6 @@ GameObject:
   - component: {fileID: 1162738324}
   - component: {fileID: 1162738325}
   - component: {fileID: 1162738322}
-  - component: {fileID: 1162738323}
   m_Layer: 0
   m_Name: NetworkManagerSystem
   m_TagString: Untagged
@@ -3648,18 +3647,6 @@ MonoBehaviour:
   - {fileID: 1624749414}
   - {fileID: 446385411}
   startGameButton: {fileID: 2088184194}
---- !u!114 &1162738323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1162738320}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48bda3db5d5e24744bde07721d254316, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1162738324
 Transform:
   m_ObjectHideFlags: 0
@@ -3683,7 +3670,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1162738320}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2e26779f58a8aa488cec2bcc5b9460e, type: 3}
+  m_Script: {fileID: 11500000, guid: 292a2b78a19278a44abb6341cdccddf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1182673112
