@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class GameSceneManager : MonoBehaviourPunCallbacks
+public class GamePunCallbacks : MonoBehaviourPunCallbacks
 {
     private GameUI_Manager uiManager;
     void Start()
@@ -28,14 +28,6 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         }
 
     }
-    public override void OnMasterClientSwitched(Player newMasterClient)
-    {
-        if (uiManager.GetGameState() != GameState.TeamSelection)
-            return;
-
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            uiManager.StartButton.SetActive(true);
-    }
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.CreateRoom("OfflineRoom");
@@ -49,6 +41,14 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
             uiManager.StartButton.SetActive(true);
 
         PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
+    }
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (uiManager.GetGameState() != GameState.TeamSelection)
+            return;
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            uiManager.StartButton.SetActive(true);
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {

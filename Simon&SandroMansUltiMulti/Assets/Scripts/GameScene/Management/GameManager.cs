@@ -43,10 +43,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         players[_id] = _name;
         uiManager.UpdateTeamSelectUIs();
     }
-    public List<string> GetPlayers()
-    {
-        return players;
-    }
+
     public void StartGame()
     {
         photonView.RPC("RPC_StartGame", RpcTarget.All);
@@ -57,20 +54,27 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         int _localPlayerNumber = GetPlayerID(PhotonNetwork.LocalPlayer.NickName);
 
         uiManager.SetGameState(GameState.Running);
+        uiManager.MainCamera.SetActive(false);
+
 
         GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, Quaternion.identity);
         MyPlayer _playerScript = _playerObj.GetComponent<MyPlayer>();
         _playerScript.SetID(_localPlayerNumber);
-    }
-    public int GetPlayerID(string _name)
-    {
-        for(int i = 0; i < players.Count; i++)
+
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            if (players[i].Equals(_name))
-                return i;
+            for(int i = 0; i < 4; i++)
+            {
+                if(players[i] == "NPC")
+                {
+                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
+                    NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
+                    _NPC_Script.SetID(i);
+                }
+            }
         }
-        return 6;
     }
+    
     public void RemovePlayerThatLeft()
     {
         photonView.RPC("RPC_RemovePlayerThatLeft", RpcTarget.All);
@@ -103,6 +107,19 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 _count++;
         }
         return _count;
+    }
+    public List<string> GetPlayers()
+    {
+        return players;
+    }
+    public int GetPlayerID(string _name)
+    {
+        for(int i = 0; i < players.Count; i++)
+        {
+            if (players[i].Equals(_name))
+                return i;
+        }
+        return 6;
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

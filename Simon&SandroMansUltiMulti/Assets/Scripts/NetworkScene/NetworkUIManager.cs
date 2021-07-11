@@ -10,11 +10,15 @@ public class NetworkUIManager : MonoBehaviour
 {
     public static NetworkUIManager Instance;
 
-    private PunCallBacks punCallbacks;
+    private NetworkPunCallbacks punCallbacks;
+
     private ConnectionStatus connectionStatus;
-    public ConnectionStatus ConnectionStatus { get => connectionStatus; set => connectionStatus = value; }
 
     private List<RoomInfo> roomInfos;
+
+    private List<GameObject> panels;
+
+    private NetworkAudioManager audioManager;
 
     [Header("JoinLobbyUIs")]
     [SerializeField] private GameObject joinLobbyUIs;
@@ -34,8 +38,6 @@ public class NetworkUIManager : MonoBehaviour
     [SerializeField] private List<TMP_Text> playerDescriptionTexts;
     [SerializeField] private GameObject startGameButton;
 
-    private List<GameObject> panels;
-    NetworkAudioManager audioManager;
     private void Awake()
     {
         if (Instance == null)
@@ -51,7 +53,7 @@ public class NetworkUIManager : MonoBehaviour
     {
         audioManager = NetworkAudioManager.Instance;
 
-        punCallbacks = PunCallBacks.Instance;
+        punCallbacks = NetworkPunCallbacks.Instance;
         roomInfos = new List<RoomInfo>();
         panels = new List<GameObject>();
         panels.Add(hostOrJoinRoomUIs);

@@ -7,17 +7,25 @@ using UnityEngine.SceneManagement;
 public class GameUI_Manager : MonoBehaviour
 {
     public static GameUI_Manager Instance;
+
+    private GameState gameState;
+
     private GameManager gameManager;
     public GameManager GameManager { get => gameManager; set => gameManager = value; }
+
     private List<GameObject> panels;
+
+    [SerializeField] private GameObject mainCamera;
+    public GameObject MainCamera { get => mainCamera; set => mainCamera = value; }
 
     [Header("Team Selection UIs")]
     [SerializeField] private GameObject teamSelectionPanel;
     [SerializeField] private List<TMP_Text> teamSelectButtonTexts;
     [SerializeField] private TMP_Text playerMessageText;
     [SerializeField] private GameObject startButton;
-    
+    public TMP_Text PlayerMessageText { get => playerMessageText; set => playerMessageText = value; }
     public GameObject StartButton { get => startButton; set => startButton = value; }
+
 
     [Header("Room UIs")]
     [SerializeField] private GameObject roomPanel;
@@ -28,11 +36,6 @@ public class GameUI_Manager : MonoBehaviour
     [Header("Game Over UIs")]
     [SerializeField] private GameObject gameOverPanel;
 
-
-
-
-    private GameState gameState;
-    public TMP_Text PlayerMessageText { get => playerMessageText; set => playerMessageText = value; }
     private void Awake()
     {
         if (Instance == null)
@@ -64,14 +67,6 @@ public class GameUI_Manager : MonoBehaviour
             SetGameState(GameState.Paused);
         }
     }
-    private void DeactivatePanels()
-    {
-        playerMessageText.text = "";
-        for(int i = 0; i < panels.Count; i++)
-        {
-            panels[i].SetActive(false);
-        }
-    }
     public void SetGameState(GameState _gameState)
     {
         DeactivatePanels();
@@ -97,10 +92,13 @@ public class GameUI_Manager : MonoBehaviour
                 break;
         }
     }
-    public void ConfigPlayer(int number)
+    private void DeactivatePanels()
     {
-        string localName = PhotonNetwork.LocalPlayer.NickName;
-        gameManager.SetPlayer(localName, number);
+        playerMessageText.text = "";
+        for(int i = 0; i < panels.Count; i++)
+        {
+            panels[i].SetActive(false);
+        }
     }
     public void UpdateTeamSelectUIs()
     {
@@ -108,6 +106,19 @@ public class GameUI_Manager : MonoBehaviour
         {
             teamSelectButtonTexts[i].text = gameManager.GetPlayers()[i];
         }
+    }
+    public void ConfigPlayer(int number)
+    {
+        string localName = PhotonNetwork.LocalPlayer.NickName;
+        gameManager.SetPlayer(localName, number);
+    }
+    public void Resume()
+    {
+        SetGameState(GameState.Running);
+    }
+    public void Quit()
+    {
+        SceneManager.LoadScene(0);
     }
     public void StartGame()
     {
@@ -126,13 +137,5 @@ public class GameUI_Manager : MonoBehaviour
     public List<TMP_Text> GetTeamSelectionButtonTexts()
     {
         return teamSelectButtonTexts;
-    }
-    public void Resume()
-    {
-        SetGameState(GameState.Running);
-    }
-    public void Quit()
-    {
-        SceneManager.LoadScene(0);
     }
 }
