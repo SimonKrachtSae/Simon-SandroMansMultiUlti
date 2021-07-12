@@ -14,6 +14,7 @@ public class PlayerParent : MonoBehaviourPun, IPunObservable
     [SerializeField] private protected SpriteRenderer spriteRenderer;
 
     private protected Team team;
+    [SerializeField] private protected float moveForce = 3;
     public void SetID(int _id)
     {
         if (_id < 2)
