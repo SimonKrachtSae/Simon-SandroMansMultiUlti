@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 5989057009086147054}
   - component: {fileID: 8692070400687852011}
   - component: {fileID: 7699137724391465659}
-  - component: {fileID: -1107768415265578814}
-  - component: {fileID: 7154446674495282240}
   m_Layer: 0
   m_Name: NPC
   m_TagString: Untagged
@@ -98,6 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dfb4fdd07bef664aa996bac1904a3e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCam: {fileID: 0}
+  spriteRenderer: {fileID: 5989057009086147054}
 --- !u!114 &7699137724391465659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,44 +118,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 8692070400687852011}
-  - {fileID: 7154446674495282240}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!50 &-1107768415265578814
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188735830939101283}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!114 &7154446674495282240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1188735830939101283}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
