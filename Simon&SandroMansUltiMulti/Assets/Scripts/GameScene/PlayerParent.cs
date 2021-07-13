@@ -13,13 +13,15 @@ public class PlayerParent : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private protected SpriteRenderer spriteRenderer;
 
-    private protected float health = 100f;
-    public Team Team { get => team; set => team = value; }
-
-
     private protected Team team;
-    [SerializeField] private protected float moveForce = 3;
-    public void SetID(int _id)
+	public Team Team { get => team; set => team = value; }
+
+	private void Awake()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+	}
+
+	public void SetID(int _id)
     {
         if (_id < 2)
         {
@@ -46,24 +48,6 @@ public class PlayerParent : MonoBehaviourPun, IPunObservable
             spriteRenderer.color = Color.red;
         }
     }
-
-    public void DealDamage(float damage)
-    {
-        photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
-    }
-
-    [PunRPC]
-    public void RPC_DealDamage(float damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-           
-        }
-       
-    }
-
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
