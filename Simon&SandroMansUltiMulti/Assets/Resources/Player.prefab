@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 6560067942217513651}
   - component: {fileID: 6850744688749137671}
   - component: {fileID: 4872326964959392820}
-  - component: {fileID: 4016239816989244301}
-  - component: {fileID: 808554943168552354}
-  - component: {fileID: 1268414591210346894}
+  - component: {fileID: -1949274110245121334}
+  - component: {fileID: 2199540424092667497}
+  - component: {fileID: -3719089175726857655}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -56,6 +56,7 @@ MonoBehaviour:
   gunPoint: {fileID: 5676144769215453760}
   ShootSpeed: 100
   worldPosition: {x: 0, y: 0, z: 0}
+  pointPos: {x: 0, y: 0, z: 0}
 --- !u!114 &4872326964959392820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,32 +77,27 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 6850744688749137671}
-  - {fileID: 808554943168552354}
+  - {fileID: 2199540424092667497}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!50 &4016239816989244301
-Rigidbody2D:
-  serializedVersion: 4
+--- !u!54 &-1949274110245121334
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870469711415782898}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
+  serializedVersion: 2
   m_Mass: 1
-  m_LinearDrag: 0
+  m_Drag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Constraints: 0
   m_CollisionDetection: 0
-  m_Constraints: 7
---- !u!114 &808554943168552354
+--- !u!114 &2199540424092667497
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -110,29 +106,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3870469711415782898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
---- !u!58 &1268414591210346894
-CircleCollider2D:
+--- !u!135 &-3719089175726857655
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870469711415782898}
-  m_Enabled: 1
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4280300265458679957
 GameObject:
   m_ObjectHideFlags: 0

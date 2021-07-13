@@ -10,7 +10,7 @@ public class MyPlayer : PlayerParent
     [SerializeField] private GameObject gunPoint;
     [SerializeField] private float ShootSpeed;
     public Vector3 worldPosition;
-
+    public Vector3 pointPos;
     void Start()
     {
         if (!photonView.IsMine)
@@ -21,6 +21,7 @@ public class MyPlayer : PlayerParent
     }
     private void Update()
     {
+        pointPos = gunPoint.transform.position;
         if(photonView.IsMine)
         {
             float xMove = Input.GetAxisRaw("Horizontal");
@@ -55,7 +56,8 @@ public class MyPlayer : PlayerParent
         GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, new Quaternion(1,0,0,1));
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
-        _bullet.GetComponent<Rigidbody2D>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
+        
+        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
     }
    
 }
