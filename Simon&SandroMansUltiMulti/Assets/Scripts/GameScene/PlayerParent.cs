@@ -14,7 +14,14 @@ public class PlayerParent : MonoBehaviourPun, IPunObservable
     [SerializeField] private protected SpriteRenderer spriteRenderer;
 
     private protected Team team;
-    public void SetID(int _id)
+	public Team Team { get => team; set => team = value; }
+
+	private void Awake()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+	}
+
+	public void SetID(int _id)
     {
         if (_id < 2)
         {

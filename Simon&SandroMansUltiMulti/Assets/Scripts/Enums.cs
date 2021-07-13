@@ -31,3 +31,11 @@ public enum GameState
     Paused,
     GameOver
 }
+
+public enum NPCstate
+{
+	Wander,
+	Chase,
+	Shoot,
+	Flee
+}

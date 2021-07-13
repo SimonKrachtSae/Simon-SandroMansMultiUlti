@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
+	public List<PlayerParent> activePlayers = new List<PlayerParent>();
     private GameUI_Manager uiManager;
     private List<string> players;
     void Start()
