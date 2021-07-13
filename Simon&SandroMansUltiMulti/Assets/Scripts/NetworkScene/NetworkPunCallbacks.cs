@@ -26,15 +26,31 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.AutomaticallySyncScene = true;
     }
- 
+  
     public void Start()
+    {
+
+        roomInfos = new List<RoomInfo>();
+        TryConnect();
+    }
+    public void TryConnect()
     {
         uiManager = NetworkUIManager.Instance;
         uiManager.SetConnectionStatus(ConnectionStatus.Connecting);
-
-        roomInfos = new List<RoomInfo>();
+        StartCoroutine(connectionTime(10));
     }
-
+    private IEnumerator connectionTime(float _time)
+    {
+        yield return new WaitForSeconds(_time);
+        if (!PhotonNetwork.IsConnected)
+        {
+            uiManager.SetConnectionStatus(ConnectionStatus.ConnectionFailed);
+        }
+    }
+    public override void OnCustomAuthenticationFailed(string debugMessage)
+    {
+        Debug.Log("Fail");
+    }
     public override void OnConnected()
     {
         Debug.Log("Connected");
@@ -44,6 +60,7 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
         Debug.Log("ConnectedToMaster");
         uiManager.SetConnectionStatus(ConnectionStatus.Connected);
     }
+   
     public override void OnJoinedLobby()
     {
         uiManager.SetConnectionStatus(ConnectionStatus.HostingOrJoiningRoom);

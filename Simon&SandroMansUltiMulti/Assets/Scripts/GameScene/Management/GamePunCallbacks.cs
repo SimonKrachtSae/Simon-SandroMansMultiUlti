@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class GamePunCallbacks : MonoBehaviourPunCallbacks
 {
@@ -47,15 +48,14 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         if (uiManager.GetGameState() != GameState.TeamSelection)
             return;
 
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            uiManager.StartButton.SetActive(true);
+        SceneManager.LoadScene(0);
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         if (uiManager.GetGameState() != GameState.TeamSelection)
             return;
 
-       // if(PhotonNetwork.LocalPlayer.IsMasterClient)
-       // uiManager.GameManager.RemovePlayerThatLeft();
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        uiManager.GameManager.RemovePlayerThatLeft();
     }
 }

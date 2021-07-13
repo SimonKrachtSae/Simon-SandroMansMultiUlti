@@ -20,6 +20,9 @@ public class NetworkUIManager : MonoBehaviour
 
     private NetworkAudioManager audioManager;
 
+    [Header("Connection Failed UIs")]
+    [SerializeField] private GameObject connectFailedPanel;
+
     [Header("JoinLobbyUIs")]
     [SerializeField] private GameObject joinLobbyUIs;
     [SerializeField] private TMP_Text playerMessageText;
@@ -60,6 +63,7 @@ public class NetworkUIManager : MonoBehaviour
         panels.Add(joinLobbyUIs);
         panels.Add(inRoomUIs);
         panels.Add(roomSelectionUIs);
+        panels.Add(connectFailedPanel);
         SetConnectionStatus(ConnectionStatus.Connecting);
     }
     private void Update()
@@ -87,6 +91,10 @@ public class NetworkUIManager : MonoBehaviour
         {
             case ConnectionStatus.Connecting:
                 playerMessageText.text = "Connecting";
+                break;
+            case ConnectionStatus.ConnectionFailed:
+                connectFailedPanel.SetActive(true);
+                playerMessageText.text = "Connection Failed. Play Offline?";
                 break;
             case ConnectionStatus.Connected:
                 playerMessageText.text = "Please Enter a Name";
@@ -217,5 +225,13 @@ public class NetworkUIManager : MonoBehaviour
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         SceneManager.LoadScene(1);
+    }
+    public void PlayOffline()
+    {
+        SceneManager.LoadScene(1);
+    }
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

@@ -19,20 +19,20 @@ public class Bullet : MonoBehaviourPun, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            PlayerParent _player = collision.gameObject.GetComponent<PlayerParent>();
-
-            if (_player.Team != player.Team)
-            {
-                _player.DealDamage(20);
-            }
-            Destroy(this.gameObject);
-        }
-        else
-        {
-         Destroy(this.gameObject);
-        }
+        //if (collision.gameObject.CompareTag("Player"))
+        //{
+        //    PlayerParent _player = collision.gameObject.GetComponent<PlayerParent>();
+        //
+        //    if (_player.Team != player.Team)
+        //    {
+        //        _player.DealDamage(20);
+        //    }
+        //    Destroy(this.gameObject);
+        //}
+        //else
+        //{
+        // Destroy(this.gameObject);
+        //}
       
     }
 

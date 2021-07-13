@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         uiManager.MainCamera.SetActive(false);
 
 
-        GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, Quaternion.identity);
+        GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, new Quaternion(1,0,0,1));
         MyPlayer _playerScript = _playerObj.GetComponent<MyPlayer>();
         _playerScript.SetID(_localPlayerNumber);
 
@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             {
                 if(players[i] == "NPC")
                 {
-                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
+                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, new Quaternion(1, 0, 0, 1));
                     NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
                     _NPC_Script.SetID(i);
                 }
@@ -77,11 +77,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     
     public void RemovePlayerThatLeft()
     {
-        photonView.RPC("RPC_RemovePlayerThatLeft", RpcTarget.All);
-    }
-    [PunRPC]
-    public void RPC_RemovePlayerThatLeft()
-    {
         for(int i = 0; i < 4; i++)
         {
             if(players[i] != "NPC")
@@ -90,7 +85,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 {
                     if(players[i] == PhotonNetwork.CurrentRoom.Players[j].NickName)
                     {
-                        return;
+                        continue;
                     }
 
                     SetPlayer("NPC", i);

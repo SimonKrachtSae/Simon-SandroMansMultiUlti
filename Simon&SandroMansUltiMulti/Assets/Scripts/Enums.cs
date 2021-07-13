@@ -14,6 +14,7 @@ public enum Team
 public enum ConnectionStatus
 {
     Connecting,
+    ConnectionFailed,
     Connected,
     HostingOrJoiningRoom,
     InRoomSelection,
