@@ -33,7 +33,6 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
 
     public void Start()
     {
-
         roomInfos = new List<RoomInfo>();
         TryConnect();
     }

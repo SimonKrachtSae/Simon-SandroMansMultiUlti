@@ -30,5 +30,6 @@ public enum GameState
     TeamSelection,
     Running,
     Paused,
-    GameOver
+    GameOver,
+    MasterLeft
 }

@@ -15,16 +15,16 @@ public class Bullet : MonoBehaviourPun, IPunObservable
         //punRPC comunicate onwer ID
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out EntityBase _player))
+        if (collision.gameObject.TryGetComponent(out EntityBase _entity))
         {
-            //if (_player.Team != player.Team)
-            //{
-            //    _player.DealDamage(20);
-            //}
+            if (_entity.ID != entityID)
+            {
+                _entity.DealDamage(20);
+            }
         }
-        Destroy(this.gameObject);
+        PhotonNetwork.Destroy(this.gameObject);
 
     }
 

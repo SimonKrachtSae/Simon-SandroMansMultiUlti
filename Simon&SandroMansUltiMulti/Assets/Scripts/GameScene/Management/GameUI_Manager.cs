@@ -118,7 +118,15 @@ public class GameUI_Manager : MonoBehaviour
     }
     public void Quit()
     {
-        PhotonNetwork.LeaveRoom();
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
+
         SceneManager.LoadScene(0);
     }
     public void StartGame()

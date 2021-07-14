@@ -18,13 +18,13 @@ public class EntityBase : MonoBehaviourPun
 
     public float Health { get => health; }
 
-    protected Team team;
-    public Team Team { get => team; }
+    public Team Team { get => id < 2? Team.A : Team.B; }
 
 
     [SerializeField] private protected float moveForce = 3;
 
     public event System.Action<string> NameChanged;
+
 
     protected void SetName(string value)
     {
@@ -32,27 +32,25 @@ public class EntityBase : MonoBehaviourPun
         NameChanged?.Invoke(value);
     }
 
-
     public void SetID(int _id)
     {
        
 
         if (_id < 2)
         {
-            photonView.RPC("RPC_SetID", RpcTarget.All, _id, Team.A);
+            photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id);
         }
         else
         {
-            photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id, Team.B);
+            photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id);
         }
     }
     [PunRPC]
-    public void RPC_SetPlayerID(int _id, Team _team)
+    public void RPC_SetPlayerID(int _id)
     {
         id = _id;
-        team = _team;
 
-        if(_team == Team.A)
+        if(Team == Team.A)
         {
 
             spriteRenderer.color = Color.blue;
@@ -72,9 +70,17 @@ public class EntityBase : MonoBehaviourPun
     public void RPC_DealDamage(float damage)
     {
         health -= damage;
+
+        if (!photonView.IsMine)
+            return;
+
         if (health <= 0)
         {
-           
+            GameUI_Manager.Instance.GameManager.EntityDead(ID);
+
+            //GameUI_Manager.Instance.MainCamera.SetActive(true);
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
        
     }

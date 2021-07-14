@@ -45,8 +45,14 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        if (uiManager.GetGameState() != GameState.TeamSelection)
-            return;
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
 
         SceneManager.LoadScene(0);
     }
@@ -58,6 +64,4 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         if(PhotonNetwork.LocalPlayer.IsMasterClient)
         uiManager.GameManager.RemovePlayerThatLeft();
     }
-
-    
 }

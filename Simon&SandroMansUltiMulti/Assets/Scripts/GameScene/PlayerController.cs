@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class MyPlayer : EntityBase
+public class PlayerController : EntityBase
 {
     [SerializeField] private Camera playerCam;
     [SerializeField] private GameObject playerObj;
@@ -11,11 +11,17 @@ public class MyPlayer : EntityBase
     [SerializeField] private float ShootSpeed;
     public Vector3 worldPosition;
     public Vector3 pointPos;
+
+    public bool destroy;
     void Start()
     {
         if (!photonView.IsMine)
         {
             playerCam.gameObject.SetActive(false);
+        }
+        else
+        {
+            GameUI_Manager.Instance.MainCamera.SetActive(false);
         }
 
     }
@@ -25,6 +31,15 @@ public class MyPlayer : EntityBase
         if(photonView.IsMine)
         {
             UpdateLocalPlayer();
+        }
+
+        if(destroy)
+        {
+            GameUI_Manager.Instance.GameManager.EntityDead(ID);
+
+            GameUI_Manager.Instance.MainCamera.SetActive(true);
+
+            PhotonNetwork.Destroy(this.gameObject);
         }
     }
 
