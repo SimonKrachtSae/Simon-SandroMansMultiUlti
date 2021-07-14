@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class NPC : PlayerParent
+public class NPC : EntityBase
 {
 
 }

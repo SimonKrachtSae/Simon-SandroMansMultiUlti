@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class MyPlayer : PlayerParent
+public class MyPlayer : EntityBase
 {
     [SerializeField] private Camera playerCam;
     [SerializeField] private GameObject playerObj;
@@ -24,24 +24,30 @@ public class MyPlayer : PlayerParent
         pointPos = gunPoint.transform.position;
         if(photonView.IsMine)
         {
-            float xMove = Input.GetAxisRaw("Horizontal");
-            float zMove = Input.GetAxisRaw("Vertical");
-            Vector3 moveDir = new Vector3(xMove, 0, zMove).normalized;
-            transform.position += moveDir * Time.fixedDeltaTime * moveForce;
-
-
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = playerCam.nearClipPlane;
-            worldPosition = playerCam.ScreenToWorldPoint(mousePos);
-            RotateToward(worldPosition, 4);
-            Debug.DrawLine(transform.position, worldPosition, Color.red);
-
-            if(Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                Shoot();
-            }
+            UpdateLocalPlayer();
         }
     }
+
+    private void UpdateLocalPlayer()
+    {
+        float xMove = Input.GetAxisRaw("Horizontal");
+        float zMove = Input.GetAxisRaw("Vertical");
+        Vector3 moveDir = new Vector3(xMove, 0, zMove).normalized;
+        transform.position += moveDir * Time.fixedDeltaTime * moveForce;
+
+
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = playerCam.nearClipPlane;
+        worldPosition = playerCam.ScreenToWorldPoint(mousePos);
+        RotateToward(worldPosition, 4);
+        Debug.DrawLine(transform.position, worldPosition, Color.red);
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Shoot();
+        }
+    }
+
     public void RotateToward(Vector3 targ, float speed)
     {
         targ.y = 0f;
@@ -53,11 +59,12 @@ public class MyPlayer : PlayerParent
     }
     private void Shoot()
     {
-        GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, new Quaternion(1,0,0,1));
+        GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.Euler(90,0,0));
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
         
         _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
+        _bullet.GetComponent<Bullet>().SetPlayer(ID);
     }
    
 }

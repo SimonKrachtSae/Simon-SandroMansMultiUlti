@@ -2,36 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using System;
 
-public class PlayerParent : MonoBehaviourPun, IPunObservable
+public class EntityBase : MonoBehaviourPun
 {
-    private protected string plName;
-    public string Name { get => plName; set => plName = value; }
+    private string plName;
+    public string PlayerName { get => plName; protected set => SetName(value); }
+  
+    protected int id;
+    public int ID { get => id; }
 
-    private protected int id;
-    public int ID { get => id; set => id = value; }
+    [SerializeField] protected SpriteRenderer spriteRenderer;
 
-    [SerializeField] private protected SpriteRenderer spriteRenderer;
+    protected float health = 100f;
 
-    private protected float health = 100f;
-    public Team Team { get => team; set => team = value; }
+    public float Health { get => health; }
+
+    protected Team team;
+    public Team Team { get => team; }
 
 
-    private protected Team team;
     [SerializeField] private protected float moveForce = 3;
+
+    public event System.Action<string> NameChanged;
+
+    protected void SetName(string value)
+    {
+        plName = value;
+        NameChanged?.Invoke(value);
+    }
+
+
     public void SetID(int _id)
     {
+       
+
         if (_id < 2)
         {
             photonView.RPC("RPC_SetID", RpcTarget.All, _id, Team.A);
         }
         else
         {
-            photonView.RPC("RPC_SetID", RpcTarget.All, _id, Team.B);
+            photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id, Team.B);
         }
     }
     [PunRPC]
-    public void RPC_SetID(int _id, Team _team)
+    public void RPC_SetPlayerID(int _id, Team _team)
     {
         id = _id;
         team = _team;
@@ -61,11 +77,5 @@ public class PlayerParent : MonoBehaviourPun, IPunObservable
            
         }
        
-    }
-
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
     }
 }

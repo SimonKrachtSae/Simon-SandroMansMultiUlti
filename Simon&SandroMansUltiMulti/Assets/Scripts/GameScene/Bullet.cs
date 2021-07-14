@@ -5,35 +5,27 @@ using Photon.Pun;
 
 public class Bullet : MonoBehaviourPun, IPunObservable
 {
-    private PlayerParent player;
+    private int entityID;
     private float damage;
 
 
-
-
-    public void SetPlayer(PlayerParent _player)
+    public void SetPlayer(int _entityID)
     {
-        player = _player;
+        entityID = _entityID;
+        //punRPC comunicate onwer ID
     }
-
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.gameObject.CompareTag("Player"))
-        //{
-        //    PlayerParent _player = collision.gameObject.GetComponent<PlayerParent>();
-        //
-        //    if (_player.Team != player.Team)
-        //    {
-        //        _player.DealDamage(20);
-        //    }
-        //    Destroy(this.gameObject);
-        //}
-        //else
-        //{
-        // Destroy(this.gameObject);
-        //}
-      
+        if (collision.gameObject.TryGetComponent(out EntityBase _player))
+        {
+            //if (_player.Team != player.Team)
+            //{
+            //    _player.DealDamage(20);
+            //}
+        }
+        Destroy(this.gameObject);
+
     }
 
 

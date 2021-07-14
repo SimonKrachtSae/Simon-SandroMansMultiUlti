@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviourPun, IPunObservable
+public class GameManager : MonoBehaviourPun
 {
     private GameUI_Manager uiManager;
     private List<string> players;
@@ -115,9 +115,5 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 return i;
         }
         return 6;
-    }
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
     }
 }

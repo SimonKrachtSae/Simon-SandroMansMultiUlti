@@ -23,7 +23,7 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         else
         {
             if(PhotonNetwork.LocalPlayer.IsMasterClient)
-            PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
+                PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
 
             uiManager.SetGameState(GameState.TeamSelection);
         }
@@ -58,4 +58,6 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         if(PhotonNetwork.LocalPlayer.IsMasterClient)
         uiManager.GameManager.RemovePlayerThatLeft();
     }
+
+    
 }
