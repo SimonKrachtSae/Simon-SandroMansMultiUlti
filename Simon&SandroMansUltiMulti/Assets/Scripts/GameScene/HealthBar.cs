@@ -3,34 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-public class HealthBar : MonoBehaviourPun
+public class HealthBar : MonoBehaviour
 {
 
     [SerializeField] private Slider Slider;
     [SerializeField] private Color low;
     [SerializeField] private Color High;
-    [SerializeField] private Vector3 Offset;
-   
+    [SerializeField] private EntityBase entityBase;
 
-    public void SetHealth(float health, float maxHealth)
+    [SerializeField] private Image image;
+
+
+    private void Start()
     {
-        Slider.gameObject.SetActive(health < maxHealth);
+        Slider.maxValue = entityBase.Health;
+        Slider.value = entityBase.Health;
+
+    }
+
+    public void SetHealth(float health)
+    {
+       
         Slider.value = health;
-        Slider.maxValue = maxHealth;
-
-        Slider.fillRect.GetComponentInChildren<Image>().color = Color.Lerp(low, High, Slider.normalizedValue);
-
+       
     }
 
 
-    private void Update()
-    {
-        //Slider.transform.position = Camera.main.WorldToScreenPoint(transform.parent.position + Offset);
-    }
+       // image.color = Color.Lerp(low, High, Slider.normalizedValue);
+ 
 
-
-    /*public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-
-    }*/
+ 
 }

@@ -25,8 +25,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3494021907055348061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.02, y: 0.02, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 31.7}
+  m_LocalScale: {x: 0.32, y: 0.3, z: 1}
   m_Children:
   - {fileID: 4939775992164150051}
   - {fileID: 4226562720650071338}
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -960.08984, y: -542.01}
+  m_AnchoredPosition: {x: 2.11, y: -18.76}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6125555474643033763
@@ -59,7 +59,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0, g: 1, b: 0.0666666, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -77,15 +77,15 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 5152616786819299501}
   m_HandleRect: {fileID: 0}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 2
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1635361508022521075}
+  healthBar: {fileID: 1645528565326488121}
   moveForce: 10
   playerCam: {fileID: 1782987643481928250}
   playerObj: {fileID: 5961606262754026943}
@@ -428,7 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0.9716981, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -614,7 +615,6 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 4298335084272766002}
-  - {fileID: 1645528565326488121}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -632,7 +632,7 @@ GameObject:
   - component: {fileID: 7257485978676363685}
   - component: {fileID: 1645528565326488121}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: HealthBarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,9 +667,9 @@ Canvas:
   m_GameObject: {fileID: 6386881097797423118}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_RenderMode: 1
+  m_Camera: {fileID: 1782987643481928250}
+  m_PlaneDistance: 0
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -734,7 +734,8 @@ MonoBehaviour:
   Slider: {fileID: 6125555474643033763}
   low: {r: 1, g: 0, b: 0, a: 0}
   High: {r: 0, g: 1, b: 0.16606593, a: 0}
-  Offset: {x: 0, y: 0, z: 0}
+  entityBase: {fileID: 6850744688749137671}
+  image: {fileID: 9029203515409759035}
 --- !u!1 &7716944234938482008
 GameObject:
   m_ObjectHideFlags: 0
@@ -793,7 +794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.15686275}
+  m_Color: {r: 0, g: 1, b: 0.08719444, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

@@ -15,6 +15,8 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     [SerializeField] protected SpriteRenderer spriteRenderer;
 
     protected float health = 100f;
+    [SerializeField] private HealthBar healthBar;
+    
     
 
     public float Health { get => health; }
@@ -65,6 +67,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void DealDamage(float damage)
     {
         photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
+        SetPlayerHealth(health);
     }
 
     [PunRPC]
@@ -87,7 +90,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
        
     }
    
-    /*public void SetPlayerHealth(float health)
+    public void SetPlayerHealth(float health)
     {
         photonView.RPC("RPC_SetPlayerHealth", RpcTarget.All, health);
     }
@@ -95,10 +98,10 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void RPC_SetPlayerHealth(float health)
     {
-        
-      
 
-    } */
+        healthBar.SetHealth(health);
+
+    } 
 
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

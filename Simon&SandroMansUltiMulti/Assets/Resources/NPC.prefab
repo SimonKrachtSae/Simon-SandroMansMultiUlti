@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5989057009086147054}
+  healthBar: {fileID: 0}
   moveForce: 3
   destroy: 0
 --- !u!114 &7699137724391465659
