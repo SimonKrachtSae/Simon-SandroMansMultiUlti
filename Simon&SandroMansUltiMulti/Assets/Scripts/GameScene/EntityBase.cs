@@ -32,6 +32,11 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
 	}
 
+	private void OnDestroy()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Remove(this);
+	}
+
 	protected void SetName(string value)
     {
         plName = value;
@@ -40,8 +45,6 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     public void SetID(int _id)
     {
-       
-
         if (_id < 2)
         {
             photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id);

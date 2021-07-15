@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
+  m_SynchronizeVelocity: 0
   m_SynchronizeAngularVelocity: 0
   m_TeleportEnabled: 0
   m_TeleportIfDistanceGreaterThan: 3
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8812396895592717137}
   gunPoint: {fileID: 2049188347862603095}
-  ShootSpeed: 10
+  ShootSpeed: 100
   moveForce: 3
   bulletDir: {x: 0, y: 0, z: 0}
   destroy: 0
@@ -295,11 +295,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.39
+      value: 0.931
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalRotation.x

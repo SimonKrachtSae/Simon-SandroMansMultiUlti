@@ -7,9 +7,9 @@ public class Bullet : MonoBehaviourPun, IPunObservable
 {
     private int entityID;
     private float damage;
+	public Team Team { get => entityID < 2 ? Team.A : Team.B; }
 
-
-    public void SetPlayer(int _entityID)
+	public void SetPlayer(int _entityID)
     {
         entityID = _entityID;
         //punRPC comunicate onwer ID
@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviourPun, IPunObservable
     {
         if (collision.gameObject.TryGetComponent(out EntityBase _entity))
         {
-            if (_entity.ID != entityID)
+            if (_entity.Team != Team)
             {
                 _entity.DealDamage(20);
             }

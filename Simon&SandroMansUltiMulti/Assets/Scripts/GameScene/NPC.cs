@@ -9,7 +9,7 @@ public class NPC : EntityBase
 {
 	private NPCstate npcState;
 	private ViewCone viewCone;
-	private EntityBase targetPlayer;
+	private EntityBase targetEntity;
 	private GameManager gameManager;
 	private NavMeshAgent agent;
 	private Vector3 targetPos;
@@ -44,11 +44,13 @@ public class NPC : EntityBase
 
 			case NPCstate.Shoot:
 				Debug.Log("Shooting...");
+				RotateToward(targetEntity.transform.position);
 				Shoot();
 				break;
 
 			case NPCstate.Chase:
 				Debug.Log("Chasing...");
+				RotateToward(targetEntity.transform.position);
 				Chase();
 				break;
 		}
@@ -69,15 +71,23 @@ public class NPC : EntityBase
 	private void Chase()
 	{
 		agent.stoppingDistance = 20;
-		agent.SetDestination(targetPlayer.transform.position);
+		agent.SetDestination(targetEntity.transform.position);
 	}
 
 	private void Shoot()
 	{
+		StartCoroutine(NPCshoot(1));
+	}
+
+	private IEnumerator NPCshoot(float _time)
+	{
+		yield return new WaitForSeconds(_time);
+
 		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
 
-		_bullet.GetComponent<Rigidbody>().velocity = bulletDir.normalized * ShootSpeed;
+		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * ShootSpeed;
 		_bullet.GetComponent<Bullet>().SetPlayer(ID);
+		StopAllCoroutines();
 	}
 
 	private void SetNewTargetPosition()
@@ -97,14 +107,14 @@ public class NPC : EntityBase
 			{
 				if (gameManager.activePlayers[i].Team != Team)
 				{
-					targetPlayer = gameManager.activePlayers[i];
-					viewCone.TargetObject = targetPlayer.gameObject;
+					targetEntity = gameManager.activePlayers[i];
+					viewCone.TargetObject = targetEntity.gameObject;
 					return;
 				}
 			}
 		}
 		viewCone.TargetObject = null;
-		targetPlayer = null;
+		targetEntity = null;
 	}
 
 	public void SetNPCState(NPCstate state)
@@ -121,27 +131,17 @@ public class NPC : EntityBase
 		return npcState;
 	}
 
-	void RotateTowardsPosition(Vector3 target)
+	public void RotateToward(Vector3 targ)
 	{
-		if (target == null)
+		if (targetEntity == null)
 			return;
 
-		Vector3 targ = target;
-		targ.z = 0f;
+		targ.y = 0f;
 		Vector3 objectPos = transform.position;
 		targ.x = targ.x - objectPos.x;
-		targ.y = targ.y - objectPos.y;
-		float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
-	}
-
-	public void RotateToward(Vector3 target, float speed)
-	{
-		Vector3 from = transform.up;
-		Vector3 to = target - transform.position;
-
-		float angle = Vector3.SignedAngle(from, to, transform.forward) * Time.fixedDeltaTime * speed;
-		transform.Rotate(0.0f, 0.0f, angle);
+		targ.z = targ.z - objectPos.z;
+		float angle = Mathf.Atan2(targ.z, targ.x) * Mathf.Rad2Deg - 90;
+		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
 
 	private void OnDrawGizmos()
