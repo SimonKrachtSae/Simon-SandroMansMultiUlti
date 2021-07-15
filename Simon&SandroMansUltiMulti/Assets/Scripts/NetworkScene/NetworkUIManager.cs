@@ -91,6 +91,8 @@ public class NetworkUIManager : MonoBehaviour
         {
             case ConnectionStatus.Connecting:
                 playerMessageText.text = "Connecting";
+                PhotonNetwork.ConnectUsingSettings();
+                PhotonNetwork.AutomaticallySyncScene = true;
                 break;
             case ConnectionStatus.ConnectionFailed:
                 connectFailedPanel.SetActive(true);
@@ -217,8 +219,13 @@ public class NetworkUIManager : MonoBehaviour
         {
             PhotonNetwork.LeaveRoom();
         }
+        if(PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
 
-        PhotonNetwork.LeaveLobby();
+        PhotonNetwork.Disconnect();
+
         SetConnectionStatus(ConnectionStatus.Connecting);
     }
     public void StartGame()

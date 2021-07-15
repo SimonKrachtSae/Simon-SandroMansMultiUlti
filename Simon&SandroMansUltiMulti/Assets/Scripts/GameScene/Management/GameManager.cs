@@ -5,9 +5,9 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
-	public List<PlayerParent> activePlayers = new List<PlayerParent>();
     private GameUI_Manager uiManager;
     private List<string> players;
+    private int localPlayerID = 5;
     void Start()
     {
         uiManager = GameUI_Manager.Instance;
@@ -52,15 +52,13 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void RPC_StartGame()
     {
-        int _localPlayerNumber = GetPlayerID(PhotonNetwork.LocalPlayer.NickName);
 
         uiManager.SetGameState(GameState.Running);
         uiManager.MainCamera.SetActive(false);
 
 
-        GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, Quaternion.identity);
-        MyPlayer _playerScript = _playerObj.GetComponent<MyPlayer>();
-        _playerScript.SetID(_localPlayerNumber);
+        localPlayerID = GetPlayerID(PhotonNetwork.LocalPlayer.NickName);
+        SpawnPlayer();
 
         if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
@@ -68,14 +66,24 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             {
                 if(players[i] == "NPC")
                 {
-                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
-                    NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
-                    _NPC_Script.SetID(i);
+                    SpawnNPC(i);
                 }
             }
         }
     }
-    
+    private void SpawnPlayer()
+    {
+
+        GameObject _playerObj = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[localPlayerID].position, new Quaternion(1, 0, 0, 1));
+        PlayerController _playerScript = _playerObj.GetComponent<PlayerController>();
+        _playerScript.SetID(localPlayerID);
+    }
+    private void SpawnNPC(int _id)
+    {
+        GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[_id].position, new Quaternion(1, 0, 0, 1));
+        NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
+        _NPC_Script.SetID(_id);
+    }
     public void RemovePlayerThatLeft()
     {
         for(int i = 0; i < 4; i++)
@@ -116,6 +124,35 @@ public class GameManager : MonoBehaviourPun, IPunObservable
                 return i;
         }
         return 6;
+    }
+    public void EntityDead(int _id)
+    {
+
+        photonView.RPC(nameof(RPC_EntityDead), RpcTarget.All,_id);
+    }
+
+    [PunRPC]
+    public void RPC_EntityDead(int _id)
+    {
+        StartCoroutine(YieldRespawn(5, _id));
+    }
+    private IEnumerator YieldRespawn(float _time, int _id)
+    {
+        yield return new WaitForSeconds(_time);
+
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            if(players[_id] == "NPC")
+            {
+                SpawnNPC(_id);
+            }
+        }
+        if(localPlayerID == _id)
+        {
+            SpawnPlayer();
+        }
+
+        StopCoroutine(YieldRespawn(_time,_id));
     }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {

@@ -30,13 +30,6 @@ public enum GameState
     TeamSelection,
     Running,
     Paused,
-    GameOver
-}
-
-public enum NPCstate
-{
-	Wander,
-	Chase,
-	Shoot,
-	Flee
+    GameOver,
+    MasterLeft
 }

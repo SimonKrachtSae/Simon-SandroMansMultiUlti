@@ -23,13 +23,16 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
             Destroy(this);
         }
 
-        PhotonNetwork.ConnectUsingSettings();
+        if (!PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.ConnectUsingSettings();
+        }
+
         PhotonNetwork.AutomaticallySyncScene = true;
     }
-  
+
     public void Start()
     {
-
         roomInfos = new List<RoomInfo>();
         TryConnect();
     }
@@ -60,7 +63,7 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
         Debug.Log("ConnectedToMaster");
         uiManager.SetConnectionStatus(ConnectionStatus.Connected);
     }
-   
+
     public override void OnJoinedLobby()
     {
         uiManager.SetConnectionStatus(ConnectionStatus.HostingOrJoiningRoom);
@@ -91,7 +94,8 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if(!PhotonNetwork.LocalPlayer.IsMasterClient)
-        uiManager.UpdatePlayerDescriptionTexts();
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            uiManager.UpdatePlayerDescriptionTexts();
     }
+
 }

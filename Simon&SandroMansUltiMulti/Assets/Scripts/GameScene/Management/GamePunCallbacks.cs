@@ -11,7 +11,7 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
     void Start()
     {
         uiManager = GameUI_Manager.Instance;
-        if(PhotonNetwork.IsMasterClient)
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
         }
@@ -22,9 +22,6 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         }
         else
         {
-            if(PhotonNetwork.LocalPlayer.IsMasterClient)
-            PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
-
             uiManager.SetGameState(GameState.TeamSelection);
         }
 
@@ -45,8 +42,14 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
     }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
-        if (uiManager.GetGameState() != GameState.TeamSelection)
-            return;
+        if (PhotonNetwork.InRoom)
+        {
+            PhotonNetwork.LeaveRoom();
+        }
+        if (PhotonNetwork.InLobby)
+        {
+            PhotonNetwork.LeaveLobby();
+        }
 
         SceneManager.LoadScene(0);
     }
