@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 
-public class EntityBase : MonoBehaviourPun
+public class EntityBase : MonoBehaviourPun, IPunObservable
 {
     private string plName;
     public string PlayerName { get => plName; protected set => SetName(value); }
@@ -83,5 +83,9 @@ public class EntityBase : MonoBehaviourPun
             PhotonNetwork.Destroy(this.gameObject);
         }
        
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }
