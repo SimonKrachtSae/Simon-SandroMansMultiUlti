@@ -21,6 +21,7 @@ public class Bullet : MonoBehaviourPun, IPunObservable
         {
             if (_entity.Team != Team)
             {
+
                 _entity.DealDamage(20);
             }
         }
