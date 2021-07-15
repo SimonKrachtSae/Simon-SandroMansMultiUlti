@@ -11,24 +11,15 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
     void Start()
     {
         uiManager = GameUI_Manager.Instance;
-        if(PhotonNetwork.IsMasterClient)
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
+            uiManager.SetGameState(GameState.TeamSelection);
         }
 
         if (!PhotonNetwork.IsConnected)
         {
             PhotonNetwork.OfflineMode = true;
-        }
-        else
-        {
-            if(PhotonNetwork.LocalPlayer.IsMasterClient)
-            {
-                PhotonNetwork.Instantiate("GameManager", Vector3.zero, Quaternion.identity);
-
-                uiManager.SetGameState(GameState.TeamSelection);
-            }
-
         }
 
     }
