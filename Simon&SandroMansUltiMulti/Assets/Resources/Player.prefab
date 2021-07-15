@@ -123,7 +123,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: -7.241, y: 0}
+  m_AnchoredPosition: {x: -7.2409973, y: 0}
   m_SizeDelta: {x: -14.482, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2666175829675242362
@@ -263,7 +263,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &2199540424092667497
 MonoBehaviour:
