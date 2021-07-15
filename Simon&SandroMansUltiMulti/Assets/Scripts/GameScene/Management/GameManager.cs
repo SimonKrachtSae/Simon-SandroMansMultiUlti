@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         uiManager.MainCamera.SetActive(false);
 
 
-        GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, new Quaternion(1,0,0,1));
+        GameObject _playerObj =  PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[_localPlayerNumber].position, Quaternion.identity);
         MyPlayer _playerScript = _playerObj.GetComponent<MyPlayer>();
         _playerScript.SetID(_localPlayerNumber);
 
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             {
                 if(players[i] == "NPC")
                 {
-                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, new Quaternion(1, 0, 0, 1));
+                    GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[i].position, Quaternion.identity);
                     NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
                     _NPC_Script.SetID(i);
                 }

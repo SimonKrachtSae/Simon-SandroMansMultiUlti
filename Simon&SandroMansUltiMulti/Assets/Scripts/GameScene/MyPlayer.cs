@@ -27,7 +27,7 @@ public class MyPlayer : PlayerParent
             float xMove = Input.GetAxisRaw("Horizontal");
             float zMove = Input.GetAxisRaw("Vertical");
             Vector3 moveDir = new Vector3(xMove, 0, zMove).normalized;
-            transform.position += moveDir * Time.fixedDeltaTime * moveForce;
+            //transform.position += moveDir * Time.fixedDeltaTime * moveForce;
 
 
             Vector3 mousePos = Input.mousePosition;
