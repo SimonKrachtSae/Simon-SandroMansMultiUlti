@@ -25,9 +25,8 @@ public class Bullet : MonoBehaviourPun, IPunObservable
             }
         }
 
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
-        PhotonNetwork.Destroy(this.gameObject);
-
+        if(photonView.IsMine)
+			PhotonNetwork.Destroy(this.gameObject);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

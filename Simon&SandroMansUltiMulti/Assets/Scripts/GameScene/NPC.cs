@@ -44,12 +44,16 @@ public class NPC : EntityBase
 
 			case NPCstate.Shoot:
 				Debug.Log("Shooting...");
+				if (targetEntity == null)
+					return;
 				RotateToward(targetEntity.transform.position);
 				Shoot();
 				break;
 
 			case NPCstate.Chase:
 				Debug.Log("Chasing...");
+				if (targetEntity == null)
+					return;
 				RotateToward(targetEntity.transform.position);
 				Chase();
 				break;
@@ -113,6 +117,7 @@ public class NPC : EntityBase
 				}
 			}
 		}
+
 		viewCone.TargetObject = null;
 		targetEntity = null;
 	}
@@ -138,9 +143,6 @@ public class NPC : EntityBase
 
 	public void RotateToward(Vector3 targ)
 	{
-		if (targetEntity == null)
-			return;
-
 		targ.y = 0f;
 		Vector3 objectPos = transform.position;
 		targ.x = targ.x - objectPos.x;
