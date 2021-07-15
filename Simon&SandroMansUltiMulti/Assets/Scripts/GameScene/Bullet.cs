@@ -24,6 +24,8 @@ public class Bullet : MonoBehaviourPun, IPunObservable
                 _entity.DealDamage(20);
             }
         }
+
+        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         PhotonNetwork.Destroy(this.gameObject);
 
     }
