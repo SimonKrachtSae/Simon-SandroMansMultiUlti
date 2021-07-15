@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPun, IPunObservable
 {
     private GameUI_Manager uiManager;
     private List<string> players;
@@ -153,5 +153,9 @@ public class GameManager : MonoBehaviourPun
         }
 
         StopCoroutine(YieldRespawn(_time,_id));
+    }
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+
     }
 }
