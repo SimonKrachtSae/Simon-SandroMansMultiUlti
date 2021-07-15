@@ -117,13 +117,18 @@ public class NPC : EntityBase
 		targetEntity = null;
 	}
 
-	public void SetNPCState(NPCstate state)
+	public void SetNPCState(NPCstate _state)
 	{
-		if (state != npcState)
+		if (_state != npcState)
 		{
-			npcState = state;
+			photonView.RPC(nameof(RPC_SetNPCState), RpcTarget.All, _state);
 		}
+	}
 
+	[PunRPC]
+	public void RPC_SetNPCState(NPCstate _state)
+	{
+		npcState = _state;
 	}
 
 	public NPCstate GetCurrentState()
