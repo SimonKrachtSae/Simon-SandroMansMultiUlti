@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     private GameUI_Manager uiManager;
     private List<string> players;
     private int localPlayerID = 5;
+    
     void Start()
     {
         uiManager = GameUI_Manager.Instance;

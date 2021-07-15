@@ -12,6 +12,7 @@ public class PlayerController : EntityBase
     public Vector3 worldPosition;
     public Vector3 pointPos;
 
+
     public bool destroy;
     void Start()
     {

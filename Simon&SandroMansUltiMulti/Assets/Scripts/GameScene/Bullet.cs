@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Bullet : MonoBehaviourPun, IPunObservable
 {
     private int entityID;
-    private float damage;
+   
 
 
     public void SetPlayer(int _entityID)
