@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     }
     private void SpawnPlayer()
     {
-
         GameObject _playerObj = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[localPlayerID].position, Quaternion.identity);
         PlayerController _playerScript = _playerObj.GetComponent<PlayerController>();
         _playerScript.SetID(localPlayerID);
