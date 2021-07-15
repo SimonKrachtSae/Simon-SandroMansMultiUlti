@@ -85,6 +85,10 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void RPC_DealDamage(float damage)
     {
         health -= damage;
+        if (!photonView.IsMine)
+        {
+            return;
+        }
 
         if (health <= 0)
         {
