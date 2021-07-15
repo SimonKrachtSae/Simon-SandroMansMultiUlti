@@ -13,11 +13,10 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public int ID { get => id; }
 
     [SerializeField] protected SpriteRenderer spriteRenderer;
+	[SerializeField] protected GameObject gunPoint;
+	[SerializeField] protected float ShootSpeed;
 
-    protected float health = 100f;
-    [SerializeField] private HealthBar healthBar;
-    
-    
+	protected float health = 100f;
 
     public float Health { get => health; }
 
@@ -28,8 +27,17 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     public event System.Action<string> NameChanged;
 
+	private void Awake()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+	}
 
-    protected void SetName(string value)
+	private void OnDestroy()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Remove(this);
+	}
+
+	protected void SetName(string value)
     {
         plName = value;
         NameChanged?.Invoke(value);
@@ -37,8 +45,6 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     public void SetID(int _id)
     {
-       
-
         if (_id < 2)
         {
             photonView.RPC(nameof(RPC_SetPlayerID), RpcTarget.All, _id);
@@ -67,13 +73,11 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void DealDamage(float damage)
     {
         photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
-        SetPlayerHealth(health);
     }
 
     [PunRPC]
     public void RPC_DealDamage(float damage)
     {
-        
         health -= damage;
 
         if (!photonView.IsMine)
@@ -89,21 +93,6 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
         }
        
     }
-   
-    public void SetPlayerHealth(float health)
-    {
-        photonView.RPC("RPC_SetPlayerHealth", RpcTarget.All, health);
-    }
-
-    [PunRPC]
-    public void RPC_SetPlayerHealth(float health)
-    {
-
-        healthBar.SetHealth(health);
-
-    } 
-
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

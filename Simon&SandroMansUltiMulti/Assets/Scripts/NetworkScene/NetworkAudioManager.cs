@@ -17,8 +17,5 @@ public class NetworkAudioManager : MonoBehaviour
             Destroy(this);
         }
     }
-    public void PlayClickSound()
-    {
-        ClickSound.Play();
-    }
+    
 }

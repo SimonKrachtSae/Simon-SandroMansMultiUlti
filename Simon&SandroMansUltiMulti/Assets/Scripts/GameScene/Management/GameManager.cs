@@ -5,10 +5,10 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
-    private GameUI_Manager uiManager;
+	public List<EntityBase> activePlayers = new List<EntityBase>();
+	private GameUI_Manager uiManager;
     private List<string> players;
     private int localPlayerID = 5;
-    
     void Start()
     {
         uiManager = GameUI_Manager.Instance;
@@ -75,13 +75,13 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     private void SpawnPlayer()
     {
 
-        GameObject _playerObj = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[localPlayerID].position, new Quaternion(1, 0, 0, 1));
+        GameObject _playerObj = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[localPlayerID].position, Quaternion.identity);
         PlayerController _playerScript = _playerObj.GetComponent<PlayerController>();
         _playerScript.SetID(localPlayerID);
     }
     private void SpawnNPC(int _id)
     {
-        GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[_id].position, new Quaternion(1, 0, 0, 1));
+        GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[_id].position, Quaternion.identity);
         NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
         _NPC_Script.SetID(_id);
     }

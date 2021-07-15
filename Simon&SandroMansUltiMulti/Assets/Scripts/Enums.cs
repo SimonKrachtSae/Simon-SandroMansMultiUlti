@@ -33,3 +33,14 @@ public enum GameState
     GameOver,
     MasterLeft
 }
+
+public enum NPCstate
+{
+	Wander,
+	Chase,
+	Shoot,
+	Flee,
+
+	GameOver,
+	MasterLeft
+}
