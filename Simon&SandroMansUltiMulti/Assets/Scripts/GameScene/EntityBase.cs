@@ -75,7 +75,10 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     {
         photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
 
-        healthBar.SetHealth(health);
+        if (healthBar != null)
+        {
+            healthBar.SetHealth(health);
+        } 
     }
 
     [PunRPC]
