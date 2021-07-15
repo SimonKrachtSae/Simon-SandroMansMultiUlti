@@ -13,8 +13,10 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public int ID { get => id; }
 
     [SerializeField] protected SpriteRenderer spriteRenderer;
+	[SerializeField] protected GameObject gunPoint;
+	[SerializeField] protected float ShootSpeed;
 
-    protected float health = 100f;
+	protected float health = 100f;
 
     public float Health { get => health; }
 
@@ -25,8 +27,12 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     public event System.Action<string> NameChanged;
 
+	private void Awake()
+	{
+		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+	}
 
-    protected void SetName(string value)
+	protected void SetName(string value)
     {
         plName = value;
         NameChanged?.Invoke(value);

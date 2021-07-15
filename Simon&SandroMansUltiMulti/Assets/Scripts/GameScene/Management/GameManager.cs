@@ -5,7 +5,8 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
-    private GameUI_Manager uiManager;
+	public List<EntityBase> activePlayers = new List<EntityBase>();
+	private GameUI_Manager uiManager;
     private List<string> players;
     private int localPlayerID = 5;
     void Start()
