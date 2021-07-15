@@ -180,6 +180,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8812396895592717137}
   gunPoint: {fileID: 2049188347862603095}
   ShootSpeed: 100
+  healthBar: {fileID: 0}
   moveForce: 3
   bulletDir: {x: 0, y: 0, z: 0}
   destroy: 0
@@ -290,6 +291,10 @@ PrefabInstance:
       value: Pistol
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -302,6 +307,10 @@ PrefabInstance:
       value: 0.931
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.7071068
       objectReference: {fileID: 0}
@@ -312,14 +321,6 @@ PrefabInstance:
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8127636785551994751, guid: a1d9d783a5731954494daeab9173505e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
