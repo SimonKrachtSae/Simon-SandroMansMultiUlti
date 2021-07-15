@@ -218,7 +218,7 @@ MonoBehaviour:
   gunPoint: {fileID: 5644524398692020092}
   ShootSpeed: 100
   healthBar: {fileID: 7116178183497472835}
-  moveForce: 5
+  moveForce: 12.5
   playerCam: {fileID: 1782987643481928250}
   playerObj: {fileID: 5961606262754026943}
   worldPosition: {x: 0, y: 0, z: 0}
@@ -288,7 +288,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3870469711415782898}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 935c3832013802a4197978538228850c, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
