@@ -16,4 +16,9 @@ public class GameAudioManager : MonoBehaviour
             Destroy(this);
         }
     }
+
+	public void PlayShootSound()
+	{
+
+	}
 }

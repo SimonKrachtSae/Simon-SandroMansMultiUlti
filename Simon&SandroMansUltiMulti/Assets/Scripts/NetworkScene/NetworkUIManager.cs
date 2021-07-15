@@ -70,7 +70,7 @@ public class NetworkUIManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            audioManager.PlayClickSound();
+            //audioManager.PlayClickSound();
         }
     }
     public void SetPlayerMessageText(string value)

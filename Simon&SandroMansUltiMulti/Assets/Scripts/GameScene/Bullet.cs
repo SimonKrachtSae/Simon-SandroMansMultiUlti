@@ -33,4 +33,10 @@ public class Bullet : MonoBehaviourPun, IPunObservable
     {
 
     }
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
+	}
 }
