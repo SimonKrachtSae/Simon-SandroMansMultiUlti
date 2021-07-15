@@ -77,7 +77,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
         if (healthBar != null)
         {
-            healthBar.SetHealth(health);
+            SetPlayerHealth(health);
         } 
     }
 
