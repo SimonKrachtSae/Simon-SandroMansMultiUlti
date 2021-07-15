@@ -14,9 +14,10 @@ public class Bullet : MonoBehaviourPun, IPunObservable
         entityID = _entityID;
         //punRPC comunicate onwer ID
     }
-    private void OnTriggerEnter(Collider other)
+
+    private void OnCollisionEnter(Collision collision)
     {
-        if (other.gameObject.TryGetComponent(out EntityBase _entity))
+        if (collision.gameObject.TryGetComponent(out EntityBase _entity))
         {
             if (_entity.Team != Team)
             {
