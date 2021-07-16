@@ -79,11 +79,15 @@ public class GameUI_Manager : MonoBehaviour
         {
             SetGameState(GameState.Paused);
         }
+
         if(GetGameState() == GameState.Running || GetGameState() == GameState.Paused || GetGameState() == GameState.Respawning)
         {
             gameTimePassed -= Time.deltaTime;
             int minutes = Mathf.FloorToInt(gameTimePassed / 60);
             int seconds = Mathf.FloorToInt(gameTimePassed % 60);
+            if (seconds < 0)
+                return;
+
             gameTimeTxt.text = minutes + " : " + seconds;
         }
     }

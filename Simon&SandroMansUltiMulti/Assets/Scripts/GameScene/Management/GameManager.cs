@@ -192,6 +192,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         }
         photonView.RPC(nameof(RPC_GameOver), RpcTarget.All,  winnerTeam);
 
+    }
+    [PunRPC]
+    public void RPC_GameOver(string _winTeam)
+    {
+
         if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             return;
       
@@ -199,10 +204,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         {
              PhotonNetwork.Destroy(activeEntities[i].gameObject);
         }
-    }
-    [PunRPC]
-    public void RPC_GameOver(string _winTeam)
-    {
+
         StopAllCoroutines();
         uiManager.SetGameState(GameState.GameOver);
         uiManager.SetGameOverTexts(entityNames, killCounts);
