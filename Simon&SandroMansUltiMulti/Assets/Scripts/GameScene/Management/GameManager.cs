@@ -146,17 +146,22 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     {
         yield return new WaitForSeconds(_time);
 
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
+        if (uiManager.GetGameState() != GameState.GameOver)
         {
-            if(entityNames[_id] == "NPC")
+            
+            if(PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                SpawnNPC(_id);
+                if(entityNames[_id] == "NPC")
+                {
+                    SpawnNPC(_id);
+                }
+            }
+            if(localPlayerID == _id)
+            {
+                SpawnPlayer();
             }
         }
-        if(localPlayerID == _id)
-        {
-            SpawnPlayer();
-        }
+
 
         StopCoroutine(YieldRespawn(_time,_id));
     }
@@ -195,6 +200,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         {
             for(int i= 3; i >= 0; i--)
             {
+                if(activeEntities[i] != null)
                 PhotonNetwork.Destroy(activeEntities[i].gameObject);
             }
         }
