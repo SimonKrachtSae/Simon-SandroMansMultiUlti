@@ -131,8 +131,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     }
     public void EntityDead(int _id)
     {
-        if (GameUI_Manager.Instance.GetGameState() != GameState.Running)
-            return;
+
         if(localPlayerID == _id)
         uiManager.SetGameState(GameState.Respawning);
         photonView.RPC(nameof(RPC_EntityDead), RpcTarget.All,_id);
@@ -169,6 +168,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     public void RPC_SetKillCount(int _id)
     {
         killCounts[_id]++;
+        Debug.Log("Player: " + _id + "Kills: " + killCounts[_id]);
     }
     public void GameOver()
     {
@@ -203,9 +203,10 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void RPC_GameOver(string _winTeam)
     {
-        GameUI_Manager.Instance.SetGameState(GameState.GameOver);
-        GameUI_Manager.Instance.SetGameOverTexts(entityNames, killCounts);
-        GameUI_Manager.Instance.WinnerText.text = "Winner" + _winTeam;
+        StopAllCoroutines();
+        uiManager.SetGameState(GameState.GameOver);
+        uiManager.SetGameOverTexts(entityNames, killCounts);
+        uiManager.WinnerText.text = "Winner" + _winTeam;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

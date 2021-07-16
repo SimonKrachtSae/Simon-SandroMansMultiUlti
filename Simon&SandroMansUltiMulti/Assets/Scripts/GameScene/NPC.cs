@@ -35,7 +35,6 @@ public class NPC : EntityBase
 				break;
 
 			case NPCstate.Shoot:
-				Debug.Log("Shooting...");
 				if (targetEntity == null)
 					return;
 				RotateToward(targetEntity.transform.position);
@@ -43,7 +42,6 @@ public class NPC : EntityBase
 				break;
 
 			case NPCstate.Chase:
-				Debug.Log("Chasing...");
 				if (targetEntity == null)
 					return;
 				RotateToward(targetEntity.transform.position);

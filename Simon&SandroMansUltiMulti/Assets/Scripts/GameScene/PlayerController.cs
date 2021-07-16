@@ -12,7 +12,7 @@ public class PlayerController : EntityBase
     public Vector3 pointPos;
 
     private bool shootReady = true;
-    private Rigidbody rigidbody;
+    private Rigidbody myRigidbody;
     void Start()
     {
         if (!photonView.IsMine)
@@ -23,7 +23,7 @@ public class PlayerController : EntityBase
         {
             GameUI_Manager.Instance.MainCamera.SetActive(false);
         }
-        rigidbody = GetComponent<Rigidbody>();
+        myRigidbody = GetComponent<Rigidbody>();
 
     }
     private void Update()
@@ -49,7 +49,7 @@ public class PlayerController : EntityBase
         float xMove = Input.GetAxisRaw("Horizontal");
         float zMove = Input.GetAxisRaw("Vertical");
         Vector3 moveDir = new Vector3(xMove, 0, zMove).normalized;
-        rigidbody.velocity = moveDir *  moveForce;
+        myRigidbody.velocity = moveDir *  moveForce;
 
 
         Vector3 mousePos = Input.mousePosition;

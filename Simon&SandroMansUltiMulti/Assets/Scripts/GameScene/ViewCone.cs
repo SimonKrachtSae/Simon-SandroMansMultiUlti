@@ -37,7 +37,6 @@ public class ViewCone : MonoBehaviour
 			{
 				if (hit.collider.CompareTag("Player"))
 				{
-					Debug.Log("Hit Player");
 					float distance = targetDir.magnitude;
 					if (distance <= agent.stoppingDistance)
 					{

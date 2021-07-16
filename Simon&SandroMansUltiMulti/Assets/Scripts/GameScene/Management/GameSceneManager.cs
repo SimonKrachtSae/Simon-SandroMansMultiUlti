@@ -58,7 +58,6 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         if (uiManager.GetGameState() != GameState.TeamSelection)
             return;
 
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
-        uiManager.GameManager.RemovePlayerThatLeft();
+        //uiManager.GameManager.RemovePlayerThatLeft();
     }
 }

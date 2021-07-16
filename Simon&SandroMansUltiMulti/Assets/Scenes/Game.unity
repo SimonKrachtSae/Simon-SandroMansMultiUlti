@@ -3363,7 +3363,11 @@ MonoBehaviour:
   gameTimeTxt: {fileID: 1868369612}
   pauseMenuPanel: {fileID: 1706194085}
   gameOverPanel: {fileID: 1242407467}
-  entityKillCountTexts: []
+  entityKillCountTexts:
+  - {fileID: 1194225955}
+  - {fileID: 87406713}
+  - {fileID: 12882685}
+  - {fileID: 1813833160}
   winnerText: {fileID: 758305606}
   respawnPanel: {fileID: 216209681}
 --- !u!4 &1070574659

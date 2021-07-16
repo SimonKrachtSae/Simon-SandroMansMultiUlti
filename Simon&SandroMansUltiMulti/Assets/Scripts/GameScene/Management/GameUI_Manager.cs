@@ -18,7 +18,7 @@ public class GameUI_Manager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     public GameObject MainCamera { get => mainCamera; set => mainCamera = value; }
 
-    private float gameTime = 120;
+    private float gameTime = 10;
     private float gameTimePassed;
 
     [Header("Team Selection UIs")]
@@ -110,6 +110,7 @@ public class GameUI_Manager : MonoBehaviour
                 pauseMenuPanel.SetActive(true);
                 break;
             case GameState.GameOver:
+                MainCamera.SetActive(true);
                 gameOverPanel.SetActive(true);
                 break;
             case GameState.Respawning:
@@ -173,6 +174,7 @@ public class GameUI_Manager : MonoBehaviour
 
         gameManager.StartGame();
         gameTimePassed = gameTime;
+
         StartCoroutine(GameTimesUp(gameTime));
     }
     public GameState GetGameState()
