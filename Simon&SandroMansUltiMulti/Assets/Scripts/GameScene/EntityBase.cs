@@ -39,6 +39,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
 	private void OnDestroy()
 	{
+        if (GameUI_Manager.Instance.GetGameState() != GameState.GameOver)
         gameManager.activeEntities.Remove(this);
 	}
 

@@ -196,25 +196,23 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void RPC_GameOver(string _winTeam)
     {
-            for(int i= 0; i < 4; i++)
-            {
-                if(i == localPlayerID)
-                {
-                    PhotonNetwork.Destroy(activeEntities[localPlayerID].gameObject);
-                }
-                else if(entityNames[i] == "NPC")
-                {
-                    PhotonNetwork.Destroy(activeEntities[i].gameObject);
-                }
-                
-            }
-        
-
-
         StopAllCoroutines();
         uiManager.SetGameState(GameState.GameOver);
         uiManager.SetGameOverTexts(entityNames, killCounts);
         uiManager.WinnerText.text = "Winner" + _winTeam;
+
+        for(int i= 3; i >= 0; i--)
+        {
+            if(i == localPlayerID)
+            {
+                PhotonNetwork.Destroy(activeEntities[localPlayerID].gameObject);
+            }
+            else if(entityNames[i] == "NPC")
+            {
+                PhotonNetwork.Destroy(activeEntities[i].gameObject);
+            }
+            
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
