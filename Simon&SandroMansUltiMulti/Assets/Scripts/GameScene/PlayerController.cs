@@ -73,12 +73,19 @@ public class PlayerController : EntityBase
     }
     private void Shoot()
     {
-        GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
+		photonView.RPC(nameof(RPC_PlayShootSound), RpcTarget.All);
+
+		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
         
-        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
+        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * shootSpeed;
         _bullet.GetComponent<Bullet>().SetPlayer(ID);
     }
-   
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
+	}
 }

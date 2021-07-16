@@ -7,13 +7,13 @@ using Photon.Realtime;
 
 public class NPC : EntityBase
 {
+	[SerializeField] protected ParticleSystem deathParticles;
 	private NPCstate npcState;
 	private ViewCone viewCone;
 	private EntityBase targetEntity;
 	private GameManager gameManager;
 	private NavMeshAgent agent;
 	private Vector3 targetPos;
-	[SerializeField] private Vector3 bulletDir;
 	public bool destroy;
 
 	private void Start()
@@ -29,11 +29,11 @@ public class NPC : EntityBase
 	{
 		if (destroy)
 		{
+			photonView.RPC(nameof(RPC_PlayDeathParticles), RpcTarget.All);
 			GameUI_Manager.Instance.GameManager.EntityDead(ID);
 			PhotonNetwork.Destroy(this.gameObject);
 		}
 
-		bulletDir = transform.forward;
 		CheckForPlayersInRange();
 
 		switch (npcState)
@@ -86,12 +86,20 @@ public class NPC : EntityBase
 	private IEnumerator NPCshoot(float _time)
 	{
 		yield return new WaitForSeconds(_time);
+		photonView.RPC(nameof(RPC_PlayShootSound), RpcTarget.All);
 
 		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
 
-		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * ShootSpeed;
+		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * shootSpeed;
 		_bullet.GetComponent<Bullet>().SetPlayer(ID);
+		
 		StopAllCoroutines();
+	}
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
 	}
 
 	private void SetNewTargetPosition()
@@ -151,9 +159,9 @@ public class NPC : EntityBase
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
 
-	private void OnDrawGizmos()
+	[PunRPC]
+	public void RPC_PlayDeathParticles()
 	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawSphere(targetPos, 0.4f);
+		deathParticles.Play();
 	}
 }
