@@ -197,13 +197,15 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     public void RPC_GameOver(string _winTeam)
     {
 
-        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
-            return;
-      
-        for(int i = 0; i < activeEntities.Count; i++)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-             PhotonNetwork.Destroy(activeEntities[i].gameObject);
+
+            for(int i = 0; i < activeEntities.Count; i++)
+            {
+                 PhotonNetwork.Destroy(activeEntities[i].gameObject);
+            }
         }
+      
 
         StopAllCoroutines();
         uiManager.SetGameState(GameState.GameOver);
