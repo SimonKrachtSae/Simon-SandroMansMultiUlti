@@ -142,10 +142,17 @@ public class NetworkUIManager : MonoBehaviour
             playerMessageText.text = "No More Rooms Available";
             return;
         }
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
-        roomOptions.IsOpen = true;
-        PhotonNetwork.CreateRoom(roomNameField.text, roomOptions);
+        if(PhotonNetwork.CountOfRooms < 6)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = 4;
+            roomOptions.IsOpen = true;
+            PhotonNetwork.CreateRoom(roomNameField.text, roomOptions);
+        }
+        else
+        {
+            playerMessageText.text = "No More Rooms Available for Hosting";
+        }
     }
     public void JoinRoom()
     {
