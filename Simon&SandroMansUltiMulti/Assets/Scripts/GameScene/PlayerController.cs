@@ -75,7 +75,10 @@ public class PlayerController : EntityBase
     {
         if (!shootReady)
             return;
-        GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
+
+		photonView.RPC(nameof(RPC_PlayShootSound), RpcTarget.All);
+
+		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
         
@@ -90,4 +93,10 @@ public class PlayerController : EntityBase
         shootReady = true;
 
     }
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
+	}
 }

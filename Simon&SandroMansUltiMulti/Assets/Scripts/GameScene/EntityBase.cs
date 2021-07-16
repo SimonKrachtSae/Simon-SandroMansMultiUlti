@@ -79,8 +79,6 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
         photonView.RPC("RPC_DealDamage", RpcTarget.All,_otherId, _damage);
         photonView.RPC(nameof(RPC_EntityHitParticles), RpcTarget.All);
 
-
-
         if (healthBar != null)
         {
             
@@ -121,6 +119,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     {
         hitParticles.Play();
     }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

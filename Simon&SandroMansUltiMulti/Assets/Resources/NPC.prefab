@@ -180,10 +180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8812396895592717137}
   gunPoint: {fileID: 2049188347862603095}
-  shootSpeed: 100
+  shootSpeed: 50
   healthBar: {fileID: 0}
   moveForce: 3
-  deathParticles: {fileID: 174675484693417358}
+  hitParticles: {fileID: 174675484693417358}
   destroy: 0
 --- !u!114 &1402567233144395455
 MonoBehaviour:
@@ -293,15 +293,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1939811495818097591, guid: 2aa5c9f480f60f14a91f02f760a3b002, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.23528409
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1939811495818097591, guid: 2aa5c9f480f60f14a91f02f760a3b002, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.07410289
+      value: 0.938
       objectReference: {fileID: 0}
     - target: {fileID: 1939811495818097591, guid: 2aa5c9f480f60f14a91f02f760a3b002, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.33740136
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1939811495818097591, guid: 2aa5c9f480f60f14a91f02f760a3b002, type: 3}
       propertyPath: m_LocalRotation.w
