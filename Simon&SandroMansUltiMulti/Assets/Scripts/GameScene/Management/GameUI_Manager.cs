@@ -18,7 +18,7 @@ public class GameUI_Manager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     public GameObject MainCamera { get => mainCamera; set => mainCamera = value; }
 
-    private float gameTime = 60;
+    private float gameTime = 5;
     private float gameTimePassed;
 
     [Header("Team Selection UIs")]
@@ -40,7 +40,7 @@ public class GameUI_Manager : MonoBehaviour
 
     [Header("Game Over UIs")]
     [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private List<TMP_Text> playerKillCountTexts;
+    [SerializeField] private List<TMP_Text> entityKillCountTexts;
     [SerializeField] private TMP_Text winnerText;
     public TMP_Text WinnerText { get => winnerText; set => winnerText = value; }
 
@@ -81,7 +81,7 @@ public class GameUI_Manager : MonoBehaviour
         }
         if(GetGameState() == GameState.Running || GetGameState() == GameState.Paused || GetGameState() == GameState.Respawning)
         {
-            gameTimePassed -= Time.fixedDeltaTime;
+            gameTimePassed -= Time.deltaTime;
             int minutes = Mathf.FloorToInt(gameTimePassed / 60);
             int seconds = Mathf.FloorToInt(gameTimePassed % 60);
             gameTimeTxt.text = minutes + " : " + seconds;
@@ -135,9 +135,9 @@ public class GameUI_Manager : MonoBehaviour
     }
     public void SetGameOverTexts(List<string> playerNames, List<int> _entityKillCounts)
     {
-        for(int i=0; i<playerKillCountTexts.Count; i++)
+        for(int i=0; i<entityKillCountTexts.Count; i++)
         {
-            playerKillCountTexts[i].text = playerNames[i] + " Killcount: " + _entityKillCounts[i];
+            entityKillCountTexts[i].text = playerNames[i] + " Killcount: " + _entityKillCounts[i];
 
         }
     }

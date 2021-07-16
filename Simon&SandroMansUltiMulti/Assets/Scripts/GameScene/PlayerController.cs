@@ -11,7 +11,7 @@ public class PlayerController : EntityBase
     public Vector3 worldPosition;
     public Vector3 pointPos;
 
-    public bool destroy;
+    private bool shootReady = true;
     void Start()
     {
         if (!photonView.IsMine)
@@ -32,14 +32,14 @@ public class PlayerController : EntityBase
             UpdateLocalPlayer();
         }
 
-        if(destroy)
-        {
-            GameUI_Manager.Instance.GameManager.EntityDead(ID);
-
-            GameUI_Manager.Instance.MainCamera.SetActive(true);
-
-            PhotonNetwork.Destroy(this.gameObject);
-        }
+        //if(destroy)
+        //{
+        //    GameUI_Manager.Instance.GameManager.EntityDead(ID);
+        //
+        //    GameUI_Manager.Instance.MainCamera.SetActive(true);
+        //
+        //    PhotonNetwork.Destroy(this.gameObject);
+        //}
     }
 
     private void UpdateLocalPlayer()
@@ -73,12 +73,21 @@ public class PlayerController : EntityBase
     }
     private void Shoot()
     {
+        if (!shootReady)
+            return;
         GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
         
-        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
+        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * shootSpeed;
         _bullet.GetComponent<Bullet>().SetPlayer(ID);
+        StartCoroutine(YieldShoot(0.5f));
     }
-   
+    private IEnumerator YieldShoot(float _time)
+    {
+        shootReady = false;
+        yield return new WaitForSeconds(_time);
+        shootReady = true;
+
+    }
 }

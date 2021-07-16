@@ -216,14 +216,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1635361508022521075}
   gunPoint: {fileID: 5644524398692020092}
-  ShootSpeed: 100
+  shootSpeed: 50
   healthBar: {fileID: 7116178183497472835}
   moveForce: 12.5
   playerCam: {fileID: 1782987643481928250}
   playerObj: {fileID: 5961606262754026943}
   worldPosition: {x: 0, y: 0, z: 0}
   pointPos: {x: 0, y: 0, z: 0}
-  destroy: 0
 --- !u!114 &4872326964959392820
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,8 +6,8 @@ using System;
 
 public class EntityBase : MonoBehaviourPun, IPunObservable
 {
-    private GameManager gameManager;
-    private string plName;
+    protected GameManager gameManager;
+    protected string plName;
     public string PlayerName { get => plName; protected set => SetName(value); }
   
     protected int id;
@@ -15,7 +15,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     [SerializeField] protected SpriteRenderer spriteRenderer;
 	[SerializeField] protected GameObject gunPoint;
-	[SerializeField] protected float ShootSpeed;
+	[SerializeField] protected float shootSpeed;
 
 	protected float health = 100f;
     [SerializeField] private HealthBar healthBar;
@@ -27,24 +27,22 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private protected float moveForce = 3;
 
-    public event System.Action<string> NameChanged;
 
 	private void Awake()
 	{
         gameManager = GameUI_Manager.Instance.GameManager;
-		gameManager.activePlayers.Add(this);
+		gameManager.activeEntities.Add(this);
         GameUI_Manager.Instance.SetGameState(GameState.Running);
 	}
 
 	private void OnDestroy()
 	{
-		gameManager.activePlayers.Remove(this);
+		gameManager.activeEntities.Remove(this);
 	}
 
 	protected void SetName(string value)
     {
         plName = value;
-        NameChanged?.Invoke(value);
     }
 
     public void SetID(int _id)
@@ -77,6 +75,8 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void DealDamage(int _otherId, float _damage)
     {
         photonView.RPC("RPC_DealDamage", RpcTarget.All,_otherId, _damage);
+
+
         if (healthBar != null)
         {
             
@@ -88,12 +88,8 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void RPC_DealDamage(int _otherId,float damage)
     {
         health -= damage;
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
-        if (health <= 0)
+       
+        if (health <= 0 && photonView.IsMine)
         {
             gameManager.EntityDead(ID);
 
@@ -101,7 +97,6 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
             PhotonNetwork.Destroy(this.gameObject);
         }
-       
     }
 
     public void SetPlayerHealth(float health)

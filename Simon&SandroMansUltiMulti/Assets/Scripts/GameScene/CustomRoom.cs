@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MyRoom : MonoBehaviour
+public class CustomRoom : MonoBehaviour
 {
-    public static MyRoom Instance;
+    public static CustomRoom Instance;
     [SerializeField] private List<Transform> spawnPoints;
     public List<Transform> SpawnPoints { get => spawnPoints; set => spawnPoints = value; }
 	public float HalfXScale { get => halfXScale; set => halfXScale = value; }

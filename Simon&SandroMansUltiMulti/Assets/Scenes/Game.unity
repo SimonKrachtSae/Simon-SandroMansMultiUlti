@@ -2093,7 +2093,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &677268343
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3172,11 +3172,7 @@ MonoBehaviour:
   gameTimeTxt: {fileID: 1868369612}
   pauseMenuPanel: {fileID: 1706194085}
   gameOverPanel: {fileID: 1242407467}
-  playerKillCountTexts:
-  - {fileID: 1194225955}
-  - {fileID: 87406713}
-  - {fileID: 12882685}
-  - {fileID: 1813833160}
+  entityKillCountTexts: []
   winnerText: {fileID: 758305606}
   respawnPanel: {fileID: 216209681}
 --- !u!4 &1070574659

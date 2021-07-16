@@ -5,9 +5,9 @@ using Photon.Pun;
 
 public class GameManager : MonoBehaviourPun, IPunObservable
 {
-	public List<EntityBase> activePlayers = new List<EntityBase>();
+	public List<EntityBase> activeEntities = new List<EntityBase>();
 	private GameUI_Manager uiManager;
-    private List<string> players;
+    private List<string> entityNames;
     private List<int> killCounts;
     private int localPlayerID = 5;
 
@@ -15,23 +15,23 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     {
         uiManager = GameUI_Manager.Instance;
         uiManager.GameManager = this;
-        players = new List<string>();
+        entityNames = new List<string>();
         killCounts = new List<int>();
         
         for(int i = 0; i < 4; i ++)
         {
-            players.Add("NPC");
+            entityNames.Add("NPC");
             killCounts.Add(0);
         }
     }
     public void SetPlayer(string _name, int _id)
     {
-        if (players[_id] != "NPC")
+        if (entityNames[_id] != "NPC")
             return;
 
-        for(int i = 0; i < players.Count; i++)
+        for(int i = 0; i < entityNames.Count; i++)
         {
-            if(players[i].Equals(_name))
+            if(entityNames[i].Equals(_name))
             {
                 photonView.RPC("RPC_SetPlayer", RpcTarget.All, "NPC", i);
             }
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     [PunRPC]
     public void RPC_SetPlayer(string _name, int _id)
     {
-        players[_id] = _name;
+        entityNames[_id] = _name;
         uiManager.UpdateTeamSelectUIs();
     }
 
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         {
             for(int i = 0; i < 4; i++)
             {
-                if(players[i] == "NPC")
+                if(entityNames[i] == "NPC")
                 {
                     SpawnNPC(i);
                 }
@@ -78,13 +78,13 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     }
     private void SpawnPlayer()
     {
-        GameObject _playerObj = PhotonNetwork.Instantiate("Player", MyRoom.Instance.SpawnPoints[localPlayerID].position, Quaternion.identity);
+        GameObject _playerObj = PhotonNetwork.Instantiate("Player", CustomRoom.Instance.SpawnPoints[localPlayerID].position, Quaternion.identity);
         PlayerController _playerScript = _playerObj.GetComponent<PlayerController>();
         _playerScript.SetID(localPlayerID);
     }
     private void SpawnNPC(int _id)
     {
-        GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", MyRoom.Instance.SpawnPoints[_id].position, Quaternion.identity);
+        GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", CustomRoom.Instance.SpawnPoints[_id].position, Quaternion.identity);
         NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
         _NPC_Script.SetID(_id);
     }
@@ -92,11 +92,11 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     {
         for(int i = 0; i < 4; i++)
         {
-            if(players[i] != "NPC")
+            if(entityNames[i] != "NPC")
             {
                 for(int j = 0; j < PhotonNetwork.CurrentRoom.Players.Count; j++)
                 {
-                    if(players[i] == PhotonNetwork.CurrentRoom.Players[j].NickName)
+                    if(entityNames[i] == PhotonNetwork.CurrentRoom.Players[j].NickName)
                     {
                         continue;
                     }
@@ -111,20 +111,20 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         int _count = 0;
         for(int i = 0; i < 4; i++)
         {
-            if (players[i] != "NPC")
+            if (entityNames[i] != "NPC")
                 _count++;
         }
         return _count;
     }
     public List<string> GetPlayers()
     {
-        return players;
+        return entityNames;
     }
     public int GetPlayerID(string _name)
     {
-        for(int i = 0; i < players.Count; i++)
+        for(int i = 0; i < entityNames.Count; i++)
         {
-            if (players[i].Equals(_name))
+            if (entityNames[i].Equals(_name))
                 return i;
         }
         return 6;
@@ -133,8 +133,8 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     {
         if (GameUI_Manager.Instance.GetGameState() != GameState.Running)
             return;
+        if(localPlayerID == _id)
         uiManager.SetGameState(GameState.Respawning);
-
         photonView.RPC(nameof(RPC_EntityDead), RpcTarget.All,_id);
     }
 
@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 
         if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
-            if(players[_id] == "NPC")
+            if(entityNames[_id] == "NPC")
             {
                 SpawnNPC(_id);
             }
@@ -195,16 +195,16 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         if (!PhotonNetwork.LocalPlayer.IsMasterClient)
             return;
       
-        for(int i = 0; i < activePlayers.Count; i++)
+        for(int i = 0; i < activeEntities.Count; i++)
         {
-             PhotonNetwork.Destroy(activePlayers[i].gameObject);
+             PhotonNetwork.Destroy(activeEntities[i].gameObject);
         }
     }
     [PunRPC]
     public void RPC_GameOver(string _winTeam)
     {
         GameUI_Manager.Instance.SetGameState(GameState.GameOver);
-        GameUI_Manager.Instance.SetGameOverTexts(players, killCounts);
+        GameUI_Manager.Instance.SetGameOverTexts(entityNames, killCounts);
         GameUI_Manager.Instance.WinnerText.text = "Winner" + _winTeam;
     }
 
