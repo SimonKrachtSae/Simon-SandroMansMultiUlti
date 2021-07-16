@@ -58,6 +58,6 @@ public class GameSceneManager : MonoBehaviourPunCallbacks
         if (uiManager.GetGameState() != GameState.TeamSelection)
             return;
 
-        //uiManager.GameManager.RemovePlayerThatLeft();
+        uiManager.GameManager.RemovePlayerThatLeft();
     }
 }
