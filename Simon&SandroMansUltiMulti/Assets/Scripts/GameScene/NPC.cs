@@ -105,15 +105,18 @@ public class NPC : EntityBase
 	{
 		for (int i = 0; i < gameManager.activeEntities.Count; i++)
 		{
-			if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 30)
-			{
-				if (gameManager.activeEntities[i].Team != Team)
+			if(gameManager.activeEntities[i] != null)
+            {
+				if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 30)
 				{
-					targetEntity = gameManager.activeEntities[i];
-					viewCone.TargetObject = targetEntity.gameObject;
-					return;
+					if (gameManager.activeEntities[i].Team != Team)
+					{
+						targetEntity = gameManager.activeEntities[i];
+						viewCone.TargetObject = targetEntity.gameObject;
+						return;
+					}
 				}
-			}
+            }
 		}
 
 		viewCone.TargetObject = null;
