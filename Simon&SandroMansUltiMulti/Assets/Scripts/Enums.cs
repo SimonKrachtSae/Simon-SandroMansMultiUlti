@@ -31,7 +31,8 @@ public enum GameState
     Running,
     Paused,
     GameOver,
-    MasterLeft
+    MasterLeft,
+    Respawning
 }
 
 public enum NPCstate

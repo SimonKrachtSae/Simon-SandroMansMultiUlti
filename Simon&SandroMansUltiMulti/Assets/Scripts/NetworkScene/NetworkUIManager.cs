@@ -10,7 +10,7 @@ public class NetworkUIManager : MonoBehaviour
 {
     public static NetworkUIManager Instance;
 
-    private NetworkPunCallbacks punCallbacks;
+    private NetworkSceneManager punCallbacks;
 
     private ConnectionStatus connectionStatus;
 
@@ -18,7 +18,6 @@ public class NetworkUIManager : MonoBehaviour
 
     private List<GameObject> panels;
 
-    private NetworkAudioManager audioManager;
 
     [Header("Connection Failed UIs")]
     [SerializeField] private GameObject connectFailedPanel;
@@ -54,9 +53,8 @@ public class NetworkUIManager : MonoBehaviour
     }
     public void Start()
     {
-        audioManager = NetworkAudioManager.Instance;
 
-        punCallbacks = NetworkPunCallbacks.Instance;
+        punCallbacks = NetworkSceneManager.Instance;
         roomInfos = new List<RoomInfo>();
         panels = new List<GameObject>();
         panels.Add(hostOrJoinRoomUIs);
@@ -144,10 +142,17 @@ public class NetworkUIManager : MonoBehaviour
             playerMessageText.text = "No More Rooms Available";
             return;
         }
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 4;
-        roomOptions.IsOpen = true;
-        PhotonNetwork.CreateRoom(roomNameField.text, roomOptions);
+        if(PhotonNetwork.CountOfRooms < 6)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = 4;
+            roomOptions.IsOpen = true;
+            PhotonNetwork.CreateRoom(roomNameField.text, roomOptions);
+        }
+        else
+        {
+            playerMessageText.text = "No More Rooms Available for Hosting";
+        }
     }
     public void JoinRoom()
     {
@@ -156,6 +161,7 @@ public class NetworkUIManager : MonoBehaviour
             playerMessageText.text = "No Rooms Availabe";
             return;
         }
+        
 
         SetConnectionStatus(ConnectionStatus.InRoomSelection);
     }
@@ -188,7 +194,11 @@ public class NetworkUIManager : MonoBehaviour
             playerMessageText.text = "Room not Active";
             return;
         }
-
+        if(!roomInfos[id].IsOpen)
+        {
+            playerMessageText.text = "Game Already in Progress";
+            return;
+        }
         PhotonNetwork.JoinRoom(roomInfos[id].Name);
     }
     public void UpdatePlayerDescriptionTexts()

@@ -4,9 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
+public class NetworkSceneManager : MonoBehaviourPunCallbacks
 {
-    public static NetworkPunCallbacks Instance;
+    public static NetworkSceneManager Instance;
 
     private NetworkUIManager uiManager;
 
@@ -94,8 +94,7 @@ public class NetworkPunCallbacks : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
-            uiManager.UpdatePlayerDescriptionTexts();
+        uiManager.UpdatePlayerDescriptionTexts();
     }
 
 }

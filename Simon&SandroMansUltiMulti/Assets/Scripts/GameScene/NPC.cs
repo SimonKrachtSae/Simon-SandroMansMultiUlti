@@ -7,13 +7,8 @@ using Photon.Realtime;
 
 public class NPC : EntityBase
 {
-	private NPCstate npcState;
-	private ViewCone viewCone;
-	private EntityBase targetEntity;
-	private GameManager gameManager;
 	private NavMeshAgent agent;
 	private Vector3 targetPos;
-	[SerializeField] private Vector3 bulletDir;
 	public bool destroy;
 
 	private void Start()
@@ -27,14 +22,8 @@ public class NPC : EntityBase
 	
 	private void Update()
 	{
-		if (destroy)
-		{
-			GameUI_Manager.Instance.GameManager.EntityDead(ID);
-			PhotonNetwork.Destroy(this.gameObject);
-		}
-
-		bulletDir = transform.forward;
-		CheckForPlayersInRange();
+		RegenerateHealth();
+		CheckForEntitiesInRange();
 
 		switch (npcState)
 		{
@@ -43,7 +32,6 @@ public class NPC : EntityBase
 				break;
 
 			case NPCstate.Shoot:
-				Debug.Log("Shooting...");
 				if (targetEntity == null)
 					return;
 				RotateToward(targetEntity.transform.position);
@@ -51,7 +39,6 @@ public class NPC : EntityBase
 				break;
 
 			case NPCstate.Chase:
-				Debug.Log("Chasing...");
 				if (targetEntity == null)
 					return;
 				RotateToward(targetEntity.transform.position);
@@ -86,36 +73,47 @@ public class NPC : EntityBase
 	private IEnumerator NPCshoot(float _time)
 	{
 		yield return new WaitForSeconds(_time);
+		photonView.RPC(nameof(RPC_PlayShootSound), RpcTarget.All);
 
 		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
 
-		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * ShootSpeed;
+		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * shootSpeed;
 		_bullet.GetComponent<Bullet>().SetPlayer(ID);
+		
 		StopAllCoroutines();
+	}
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
 	}
 
 	private void SetNewTargetPosition()
 	{
-		MyRoom room = MyRoom.Instance;
+		CustomRoom room = CustomRoom.Instance;
 		float rndX = Random.Range(room.transform.position.x - room.HalfXScale, room.transform.position.x + room.HalfXScale);
 		float rndZ = Random.Range(room.transform.position.z - room.HalfZScale, room.transform.position.z + room.HalfZScale);
 
 		targetPos = new Vector3(rndX, 0, rndZ);
 	}
 
-	private void CheckForPlayersInRange()
+	private void CheckForEntitiesInRange()
 	{
-		for (int i = 0; i < gameManager.activePlayers.Count; i++)
+		for (int i = 0; i < gameManager.activeEntities.Count; i++)
 		{
-			if ((gameManager.activePlayers[i].transform.position - transform.position).magnitude < 30)
-			{
-				if (gameManager.activePlayers[i].Team != Team)
+			if(gameManager.activeEntities[i] != null)
+            {
+				if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 50)
 				{
-					targetEntity = gameManager.activePlayers[i];
-					viewCone.TargetObject = targetEntity.gameObject;
-					return;
+					if (gameManager.activeEntities[i].Team != Team)
+					{
+						targetEntity = gameManager.activeEntities[i];
+						viewCone.TargetObject = targetEntity.gameObject;
+						return;
+					}
 				}
-			}
+            }
 		}
 
 		viewCone.TargetObject = null;
@@ -151,9 +149,4 @@ public class NPC : EntityBase
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawSphere(targetPos, 0.4f);
-	}
 }

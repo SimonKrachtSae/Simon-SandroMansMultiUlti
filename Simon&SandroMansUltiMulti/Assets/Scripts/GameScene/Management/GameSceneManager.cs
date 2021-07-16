@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
 
-public class GamePunCallbacks : MonoBehaviourPunCallbacks
+public class GameSceneManager : MonoBehaviourPunCallbacks
 {
     private GameUI_Manager uiManager;
     void Start()
@@ -58,7 +58,6 @@ public class GamePunCallbacks : MonoBehaviourPunCallbacks
         if (uiManager.GetGameState() != GameState.TeamSelection)
             return;
 
-        if(PhotonNetwork.LocalPlayer.IsMasterClient)
         uiManager.GameManager.RemovePlayerThatLeft();
     }
 }

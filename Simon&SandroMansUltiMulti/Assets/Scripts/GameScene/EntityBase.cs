@@ -6,17 +6,19 @@ using System;
 
 public class EntityBase : MonoBehaviourPun, IPunObservable
 {
-    private string plName;
-    public string PlayerName { get => plName; protected set => SetName(value); }
+    protected GameManager gameManager;
+    protected string plName;
+    public string EntityName { get => plName; set => SetName(value); }
   
     protected int id;
     public int ID { get => id; }
 
-    [SerializeField] protected SpriteRenderer spriteRenderer;
+	[SerializeField] protected SpriteRenderer spriteRenderer;
 	[SerializeField] protected GameObject gunPoint;
-	[SerializeField] protected float ShootSpeed;
+	[SerializeField] protected float shootSpeed;
 
-	protected float health = 100f;
+    protected float health;
+    protected float maxHealth = 100f;
     [SerializeField] private HealthBar healthBar;
 
     public float Health { get => health; }
@@ -25,23 +27,30 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
 
     [SerializeField] private protected float moveForce = 3;
+    [SerializeField] protected ParticleSystem hitParticles;
 
-    public event System.Action<string> NameChanged;
+    protected ViewCone viewCone;
+    protected EntityBase targetEntity;
+    protected NPCstate npcState;
 
-	private void Awake()
+
+    private void Awake()
 	{
-		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+        gameManager = GameUI_Manager.Instance.GameManager;
+		gameManager.activeEntities.Add(this);
+        GameUI_Manager.Instance.SetGameState(GameState.Running);
+        health = maxHealth;
 	}
 
 	private void OnDestroy()
 	{
-		GameUI_Manager.Instance.GameManager.activePlayers.Remove(this);
+
+        gameManager.activeEntities[id] = null;
 	}
 
 	protected void SetName(string value)
     {
         plName = value;
-        NameChanged?.Invoke(value);
     }
 
     public void SetID(int _id)
@@ -71,34 +80,47 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void DealDamage(float damage)
+    public void DealDamage(int _otherId, float _damage)
     {
-        photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
+        photonView.RPC("RPC_DealDamage", RpcTarget.All,_otherId, _damage);
+        photonView.RPC(nameof(RPC_EntityHitParticles), RpcTarget.All);
 
         if (healthBar != null)
         {
+            
             SetPlayerHealth(health);
         } 
     }
 
     [PunRPC]
-    public void RPC_DealDamage(float damage)
+    public void RPC_DealDamage(int _otherId,float damage)
     {
         health -= damage;
-        if (!photonView.IsMine)
+       
+        if (health <= 0 && photonView.IsMine)
         {
-            return;
-        }
+            gameManager.EntityDead(ID);
 
-        if (health <= 0)
-        {
-            GameUI_Manager.Instance.GameManager.EntityDead(ID);
-
-            //GameUI_Manager.Instance.MainCamera.SetActive(true);
+            gameManager.SetKillCount(_otherId);
 
             PhotonNetwork.Destroy(this.gameObject);
         }
-       
+        if (EntityName == "NPC")
+        {
+            for(int i = 0; i < gameManager.activeEntities.Count; i++)
+            {
+                if(gameManager.activeEntities[i] != null)
+                {
+                    if(gameManager.activeEntities[i].ID == _otherId)
+                    {
+                        targetEntity = gameManager.activeEntities[i];
+                        viewCone.TargetObject = gameManager.activeEntities[i].gameObject;
+                        npcState = NPCstate.Chase;
+                    }
+                }
+
+            }
+        }
     }
 
     public void SetPlayerHealth(float health)
@@ -114,7 +136,22 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     }
 
+    [PunRPC]
+    public void RPC_EntityHitParticles()
+    {
+        hitParticles.Play();
+    }
+    protected void RegenerateHealth()
+    {
+        if (health < maxHealth -1)
+        {
+            health += 10 * Time.fixedDeltaTime;
 
+            if (healthBar == null)
+                return;
+            SetPlayerHealth(health);
+        }
+    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

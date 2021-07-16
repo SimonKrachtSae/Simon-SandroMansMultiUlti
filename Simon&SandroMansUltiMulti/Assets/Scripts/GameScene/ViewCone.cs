@@ -29,6 +29,7 @@ public class ViewCone : MonoBehaviour
 			return;
 		}
 
+
 		angleToTarget = AngleBetween(transform.position, targetObject.transform.position);
 		if (angleToTarget <= 45)
 		{
@@ -37,7 +38,6 @@ public class ViewCone : MonoBehaviour
 			{
 				if (hit.collider.CompareTag("Player"))
 				{
-					Debug.Log("Hit Player");
 					float distance = targetDir.magnitude;
 					if (distance <= agent.stoppingDistance)
 					{

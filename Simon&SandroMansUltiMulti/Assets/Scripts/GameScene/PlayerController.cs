@@ -11,7 +11,8 @@ public class PlayerController : EntityBase
     public Vector3 worldPosition;
     public Vector3 pointPos;
 
-    public bool destroy;
+    private bool shootReady = true;
+    private Rigidbody myRigidbody;
     void Start()
     {
         if (!photonView.IsMine)
@@ -22,24 +23,27 @@ public class PlayerController : EntityBase
         {
             GameUI_Manager.Instance.MainCamera.SetActive(false);
         }
+        myRigidbody = GetComponent<Rigidbody>();
 
     }
     private void Update()
     {
+        RegenerateHealth();
+
         pointPos = gunPoint.transform.position;
         if(photonView.IsMine)
         {
             UpdateLocalPlayer();
         }
 
-        if(destroy)
-        {
-            GameUI_Manager.Instance.GameManager.EntityDead(ID);
-
-            GameUI_Manager.Instance.MainCamera.SetActive(true);
-
-            PhotonNetwork.Destroy(this.gameObject);
-        }
+        //if(destroy)
+        //{
+        //    GameUI_Manager.Instance.GameManager.EntityDead(ID);
+        //
+        //    GameUI_Manager.Instance.MainCamera.SetActive(true);
+        //
+        //    PhotonNetwork.Destroy(this.gameObject);
+        //}
     }
 
     private void UpdateLocalPlayer()
@@ -47,7 +51,7 @@ public class PlayerController : EntityBase
         float xMove = Input.GetAxisRaw("Horizontal");
         float zMove = Input.GetAxisRaw("Vertical");
         Vector3 moveDir = new Vector3(xMove, 0, zMove).normalized;
-        transform.position += moveDir * Time.fixedDeltaTime * moveForce;
+        myRigidbody.velocity = moveDir *  moveForce;
 
 
         Vector3 mousePos = Input.mousePosition;
@@ -73,12 +77,30 @@ public class PlayerController : EntityBase
     }
     private void Shoot()
     {
-        GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
+        if (!shootReady)
+            return;
+
+		photonView.RPC(nameof(RPC_PlayShootSound), RpcTarget.All);
+
+		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
         float xDir = worldPosition.x - gunPoint.transform.position.x;
         float zDir = worldPosition.z - gunPoint.transform.position.z;
         
-        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * ShootSpeed;
+        _bullet.GetComponent<Rigidbody>().velocity = (new Vector3(xDir,0,zDir)).normalized * shootSpeed;
         _bullet.GetComponent<Bullet>().SetPlayer(ID);
+        StartCoroutine(YieldShoot(0.5f));
     }
-   
+    private IEnumerator YieldShoot(float _time)
+    {
+        shootReady = false;
+        yield return new WaitForSeconds(_time);
+        shootReady = true;
+
+    }
+
+	[PunRPC]
+	public void RPC_PlayShootSound()
+	{
+		GameAudioManager.Instance.PlayShootSound();
+	}
 }

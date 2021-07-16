@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviourPun, IPunObservable
     private int entityID;
     private float damage;
 	public Team Team { get => entityID < 2 ? Team.A : Team.B; }
+    void Start()
+    {
+    }
 
 	public void SetPlayer(int _entityID)
     {
@@ -15,14 +18,14 @@ public class Bullet : MonoBehaviourPun, IPunObservable
         //punRPC comunicate onwer ID
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.TryGetComponent(out EntityBase _entity))
+        if (other.gameObject.TryGetComponent(out EntityBase _entity))
         {
             if (_entity.Team != Team)
             {
 
-                _entity.DealDamage(20);
+                _entity.DealDamage(entityID,20);
             }
         }
 
@@ -34,10 +37,4 @@ public class Bullet : MonoBehaviourPun, IPunObservable
     {
 
     }
-
-	[PunRPC]
-	public void RPC_PlayShootSound()
-	{
-		GameAudioManager.Instance.PlayShootSound();
-	}
 }
