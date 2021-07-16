@@ -85,7 +85,8 @@ public class GameUI_Manager : MonoBehaviour
             gameTimePassed -= Time.deltaTime;
             int minutes = Mathf.FloorToInt(gameTimePassed / 60);
             int seconds = Mathf.FloorToInt(gameTimePassed % 60);
-            if (seconds < 0)
+
+            if (minutes < 0)
                 return;
 
             gameTimeTxt.text = minutes + " : " + seconds;
