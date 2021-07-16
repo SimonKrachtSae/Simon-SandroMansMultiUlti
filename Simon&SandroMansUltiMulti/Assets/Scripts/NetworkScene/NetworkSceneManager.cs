@@ -94,8 +94,7 @@ public class NetworkSceneManager : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
-            uiManager.UpdatePlayerDescriptionTexts();
+        uiManager.UpdatePlayerDescriptionTexts();
     }
 
 }
