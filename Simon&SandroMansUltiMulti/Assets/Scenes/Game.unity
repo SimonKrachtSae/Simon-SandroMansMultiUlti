@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -315,6 +315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -581,6 +582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -1819,6 +1821,10 @@ PrefabInstance:
       value: 2.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 68.12
       objectReference: {fileID: 0}
@@ -1857,10 +1863,6 @@ PrefabInstance:
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190647, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_Name
@@ -1934,6 +1936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2306,6 +2309,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!223 &679050987
 Canvas:
   m_ObjectHideFlags: 0
@@ -2348,6 +2352,10 @@ PrefabInstance:
       value: 2.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: -33.42
       objectReference: {fileID: 0}
@@ -2386,10 +2394,6 @@ PrefabInstance:
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190647, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_Name
@@ -3035,6 +3039,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -4009,6 +4014,10 @@ PrefabInstance:
       value: 2.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 103.600006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.3
       objectReference: {fileID: 0}
@@ -4047,10 +4056,6 @@ PrefabInstance:
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 103.600006
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190647, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_Name
@@ -4188,6 +4193,10 @@ PrefabInstance:
       value: 2.2000003
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 103.600006
+      objectReference: {fileID: 0}
+    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.3
       objectReference: {fileID: 0}
@@ -4226,10 +4235,6 @@ PrefabInstance:
     - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2757674878162190643, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 103.600006
       objectReference: {fileID: 0}
     - target: {fileID: 2757674878162190647, guid: 89843d3a2258b1b4fb9609091ccf51ed, type: 3}
       propertyPath: m_Name
@@ -4303,6 +4308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -4804,6 +4810,7 @@ Light:
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
 --- !u!4 &1459173740
@@ -5836,6 +5843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -5968,6 +5976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -6100,6 +6109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Navigation:
     m_Mode: 3
+    m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -6128,7 +6138,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2059535287}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1070574658}
+        m_TargetAssemblyTypeName: GameUI_Manager, Assembly-CSharp
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2059535287
 MonoBehaviour:
   m_ObjectHideFlags: 0

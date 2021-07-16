@@ -7,11 +7,9 @@ using Photon.Realtime;
 
 public class NPC : EntityBase
 {
-	[SerializeField] protected ParticleSystem deathParticles;
 	private NPCstate npcState;
 	private ViewCone viewCone;
 	private EntityBase targetEntity;
-	private GameManager gameManager;
 	private NavMeshAgent agent;
 	private Vector3 targetPos;
 	public bool destroy;
@@ -27,12 +25,6 @@ public class NPC : EntityBase
 	
 	private void Update()
 	{
-		if (destroy)
-		{
-			photonView.RPC(nameof(RPC_PlayDeathParticles), RpcTarget.All);
-			GameUI_Manager.Instance.GameManager.EntityDead(ID);
-			PhotonNetwork.Destroy(this.gameObject);
-		}
 
 		CheckForPlayersInRange();
 
@@ -104,7 +96,7 @@ public class NPC : EntityBase
 
 	private void SetNewTargetPosition()
 	{
-		MyRoom room = MyRoom.Instance;
+		CustomRoom room = CustomRoom.Instance;
 		float rndX = Random.Range(room.transform.position.x - room.HalfXScale, room.transform.position.x + room.HalfXScale);
 		float rndZ = Random.Range(room.transform.position.z - room.HalfZScale, room.transform.position.z + room.HalfZScale);
 
@@ -113,13 +105,13 @@ public class NPC : EntityBase
 
 	private void CheckForPlayersInRange()
 	{
-		for (int i = 0; i < gameManager.activePlayers.Count; i++)
+		for (int i = 0; i < gameManager.activeEntities.Count; i++)
 		{
-			if ((gameManager.activePlayers[i].transform.position - transform.position).magnitude < 30)
+			if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 30)
 			{
-				if (gameManager.activePlayers[i].Team != Team)
+				if (gameManager.activeEntities[i].Team != Team)
 				{
-					targetEntity = gameManager.activePlayers[i];
+					targetEntity = gameManager.activeEntities[i];
 					viewCone.TargetObject = targetEntity.gameObject;
 					return;
 				}
@@ -159,9 +151,4 @@ public class NPC : EntityBase
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
 
-	[PunRPC]
-	public void RPC_PlayDeathParticles()
-	{
-		deathParticles.Play();
-	}
 }

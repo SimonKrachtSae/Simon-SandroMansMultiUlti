@@ -26,9 +26,11 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
 
     [SerializeField] private protected float moveForce = 3;
+    [SerializeField] protected ParticleSystem hitParticles;
 
 
-	private void Awake()
+
+    private void Awake()
 	{
         gameManager = GameUI_Manager.Instance.GameManager;
 		gameManager.activeEntities.Add(this);
@@ -37,7 +39,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
 	private void OnDestroy()
 	{
-		gameManager.activeEntities.Remove(this);
+        gameManager.activeEntities.Remove(this);
 	}
 
 	protected void SetName(string value)
@@ -75,6 +77,8 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     public void DealDamage(int _otherId, float _damage)
     {
         photonView.RPC("RPC_DealDamage", RpcTarget.All,_otherId, _damage);
+        photonView.RPC(nameof(RPC_EntityHitParticles), RpcTarget.All);
+
 
 
         if (healthBar != null)
@@ -112,7 +116,11 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
     }
 
-
+    [PunRPC]
+    public void RPC_EntityHitParticles()
+    {
+        hitParticles.Play();
+    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

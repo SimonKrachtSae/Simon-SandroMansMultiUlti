@@ -18,7 +18,7 @@ public class GameUI_Manager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     public GameObject MainCamera { get => mainCamera; set => mainCamera = value; }
 
-    private float gameTime = 5;
+    private float gameTime = 120;
     private float gameTimePassed;
 
     [Header("Team Selection UIs")]
