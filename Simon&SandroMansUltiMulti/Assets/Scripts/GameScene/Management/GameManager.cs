@@ -190,6 +190,14 @@ public class GameManager : MonoBehaviourPun, IPunObservable
             winnerTeam = "Red";
 
         }
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            for(int i= 3; i >= 0; i--)
+            {
+                PhotonNetwork.Destroy(activeEntities[i].gameObject);
+            }
+        }
         photonView.RPC(nameof(RPC_GameOver), RpcTarget.All,  winnerTeam);
 
     }
@@ -201,18 +209,6 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         uiManager.SetGameOverTexts(entityNames, killCounts);
         uiManager.WinnerText.text = "Winner" + _winTeam;
 
-        for(int i= 3; i >= 0; i--)
-        {
-            if(i == localPlayerID)
-            {
-                PhotonNetwork.Destroy(activeEntities[localPlayerID].gameObject);
-            }
-            else if(entityNames[i] == "NPC")
-            {
-                PhotonNetwork.Destroy(activeEntities[i].gameObject);
-            }
-            
-        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
