@@ -80,7 +80,7 @@ public class NPC : EntityBase
 
 		GameObject _bullet = PhotonNetwork.Instantiate("Bullet", gunPoint.transform.position, Quaternion.identity);
 
-		_bullet.GetComponent<Rigidbody>().velocity = transform.forward * shootSpeed;
+		transform.position += transform.forward * shootSpeed * Time.fixedDeltaTime;
 		_bullet.GetComponent<Bullet>().SetPlayer(ID);
 		
 		StopAllCoroutines();

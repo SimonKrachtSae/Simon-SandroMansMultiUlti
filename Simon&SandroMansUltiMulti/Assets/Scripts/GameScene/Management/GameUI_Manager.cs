@@ -60,6 +60,7 @@ public class GameUI_Manager : MonoBehaviour
     }
     private void Start()
     {
+        gameTimePassed = gameTime;
         panels = new List<GameObject>();
         panels.Add(teamSelectionPanel);
         panels.Add(roomPanel);
@@ -178,7 +179,6 @@ public class GameUI_Manager : MonoBehaviour
         }
 
         gameManager.StartGame();
-        gameTimePassed = gameTime;
 
         StartCoroutine(GameTimesUp(gameTime));
     }
