@@ -145,7 +145,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     {
         if (health < maxHealth -1)
         {
-            health += 10 * Time.fixedDeltaTime;
+            health += 10 * Time.deltaTime;
 
             if (healthBar == null)
                 return;
