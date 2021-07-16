@@ -82,7 +82,6 @@ public class NetworkSceneManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         uiManager.SetConnectionStatus(ConnectionStatus.InRoom);
-        uiManager.UpdatePlayerDescriptionTexts();
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {

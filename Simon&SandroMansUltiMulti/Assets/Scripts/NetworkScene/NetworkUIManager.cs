@@ -196,7 +196,7 @@ public class NetworkUIManager : MonoBehaviour
         }
         if(!roomInfos[id].IsOpen)
         {
-            playerMessageText.text = "Game Already Running";
+            playerMessageText.text = "Game Already in Progress";
             return;
         }
         PhotonNetwork.JoinRoom(roomInfos[id].Name);
