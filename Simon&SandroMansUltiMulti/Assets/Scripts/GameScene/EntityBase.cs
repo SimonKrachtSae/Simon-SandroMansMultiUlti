@@ -13,7 +13,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     protected int id;
     public int ID { get => id; }
 
-    [SerializeField] protected SpriteRenderer spriteRenderer;
+	[SerializeField] protected SpriteRenderer spriteRenderer;
 	[SerializeField] protected GameObject gunPoint;
 	[SerializeField] protected float shootSpeed;
 

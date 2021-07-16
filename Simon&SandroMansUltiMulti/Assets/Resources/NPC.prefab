@@ -179,9 +179,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8812396895592717137}
   gunPoint: {fileID: 2049188347862603095}
-  shootSpeed: 0
+  shootSpeed: 100
   healthBar: {fileID: 0}
   moveForce: 3
+  deathParticles: {fileID: 3119681386747775481, guid: 2aa5c9f480f60f14a91f02f760a3b002, type: 3}
+  destroy: 0
 --- !u!114 &1402567233144395455
 MonoBehaviour:
   m_ObjectHideFlags: 0

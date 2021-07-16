@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameAudioManager : MonoBehaviour
 {
     public static GameAudioManager Instance;
+	AudioSource shootSound;
     private void Awake()
     {
         if (Instance == null)
@@ -15,10 +16,11 @@ public class GameAudioManager : MonoBehaviour
         {
             Destroy(this);
         }
+		shootSound = GetComponent<AudioSource>();
     }
 
 	public void PlayShootSound()
 	{
-
+		shootSound.Play();
 	}
 }
