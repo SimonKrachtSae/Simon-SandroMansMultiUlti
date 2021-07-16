@@ -8,16 +8,20 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 	public List<EntityBase> activePlayers = new List<EntityBase>();
 	private GameUI_Manager uiManager;
     private List<string> players;
+    private List<int> killCounts;
     private int localPlayerID = 5;
+
     void Start()
     {
         uiManager = GameUI_Manager.Instance;
         uiManager.GameManager = this;
         players = new List<string>();
+        killCounts = new List<int>();
         
         for(int i = 0; i < 4; i ++)
         {
             players.Add("NPC");
+            killCounts.Add(0);
         }
     }
     public void SetPlayer(string _name, int _id)
@@ -127,6 +131,9 @@ public class GameManager : MonoBehaviourPun, IPunObservable
     }
     public void EntityDead(int _id)
     {
+        if (GameUI_Manager.Instance.GetGameState() != GameState.Running)
+            return;
+        uiManager.SetGameState(GameState.Respawning);
 
         photonView.RPC(nameof(RPC_EntityDead), RpcTarget.All,_id);
     }
@@ -154,6 +161,53 @@ public class GameManager : MonoBehaviourPun, IPunObservable
 
         StopCoroutine(YieldRespawn(_time,_id));
     }
+    public void SetKillCount(int _id)
+    {
+        photonView.RPC(nameof(RPC_SetKillCount), RpcTarget.All, _id);
+    }
+    [PunRPC]
+    public void RPC_SetKillCount(int _id)
+    {
+        killCounts[_id]++;
+    }
+    public void GameOver()
+    {
+        int teamAKills = killCounts[0] + killCounts[1];
+        int teamBKills = killCounts[2] + killCounts[3];
+        string winnerTeam;
+
+        if(teamAKills > teamBKills)
+        {
+            winnerTeam = "Blue";
+        }
+        else if(teamAKills == teamBKills)
+        {
+
+            winnerTeam = "Tie";
+        }
+        else
+        {
+            winnerTeam = "Red";
+
+        }
+        photonView.RPC(nameof(RPC_GameOver), RpcTarget.All,  winnerTeam);
+
+        if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            return;
+      
+        for(int i = 0; i < activePlayers.Count; i++)
+        {
+             PhotonNetwork.Destroy(activePlayers[i].gameObject);
+        }
+    }
+    [PunRPC]
+    public void RPC_GameOver(string _winTeam)
+    {
+        GameUI_Manager.Instance.SetGameState(GameState.GameOver);
+        GameUI_Manager.Instance.SetGameOverTexts(players, killCounts);
+        GameUI_Manager.Instance.WinnerText.text = "Winner" + _winTeam;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

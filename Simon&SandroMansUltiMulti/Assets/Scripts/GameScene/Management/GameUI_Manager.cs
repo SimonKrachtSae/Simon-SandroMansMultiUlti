@@ -18,6 +18,9 @@ public class GameUI_Manager : MonoBehaviour
     [SerializeField] private GameObject mainCamera;
     public GameObject MainCamera { get => mainCamera; set => mainCamera = value; }
 
+    private float gameTime = 60;
+    private float gameTimePassed;
+
     [Header("Team Selection UIs")]
     [SerializeField] private GameObject teamSelectionPanel;
     [SerializeField] private List<TMP_Text> teamSelectButtonTexts;
@@ -29,12 +32,20 @@ public class GameUI_Manager : MonoBehaviour
 
     [Header("Room UIs")]
     [SerializeField] private GameObject roomPanel;
+    [SerializeField] private GameObject gameUIs;
+    [SerializeField] private TMP_Text gameTimeTxt;
 
     [Header("Pause Menu UIs")]
     [SerializeField] private GameObject pauseMenuPanel;
 
     [Header("Game Over UIs")]
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private List<TMP_Text> playerKillCountTexts;
+    [SerializeField] private TMP_Text winnerText;
+    public TMP_Text WinnerText { get => winnerText; set => winnerText = value; }
+
+    [SerializeField] private GameObject respawnPanel;
+
 
     private void Awake()
     {
@@ -53,7 +64,9 @@ public class GameUI_Manager : MonoBehaviour
         panels.Add(teamSelectionPanel);
         panels.Add(roomPanel);
         panels.Add(pauseMenuPanel);
+        panels.Add(respawnPanel);
         panels.Add(gameOverPanel);
+        panels.Add(gameUIs);
         DeactivatePanels();
         if(PhotonNetwork.LocalPlayer.IsMasterClient)
         {
@@ -65,6 +78,13 @@ public class GameUI_Manager : MonoBehaviour
         if(Input.GetKey(KeyCode.Escape))
         {
             SetGameState(GameState.Paused);
+        }
+        if(GetGameState() == GameState.Running || GetGameState() == GameState.Paused || GetGameState() == GameState.Respawning)
+        {
+            gameTimePassed -= Time.fixedDeltaTime;
+            int minutes = Mathf.FloorToInt(gameTimePassed / 60);
+            int seconds = Mathf.FloorToInt(gameTimePassed % 60);
+            gameTimeTxt.text = minutes + " : " + seconds;
         }
     }
     public void SetGameState(GameState _gameState)
@@ -82,6 +102,8 @@ public class GameUI_Manager : MonoBehaviour
                 teamSelectionPanel.SetActive(true);
                 break;
             case GameState.Running:
+                MainCamera.SetActive(false);
+                gameUIs.SetActive(true);
                 roomPanel.SetActive(true);
                 break;
             case GameState.Paused:
@@ -89,6 +111,10 @@ public class GameUI_Manager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 gameOverPanel.SetActive(true);
+                break;
+            case GameState.Respawning:
+                respawnPanel.SetActive(true);
+                mainCamera.SetActive(true);
                 break;
         }
     }
@@ -105,6 +131,14 @@ public class GameUI_Manager : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             teamSelectButtonTexts[i].text = gameManager.GetPlayers()[i];
+        }
+    }
+    public void SetGameOverTexts(List<string> playerNames, List<int> _entityKillCounts)
+    {
+        for(int i=0; i<playerKillCountTexts.Count; i++)
+        {
+            playerKillCountTexts[i].text = playerNames[i] + " Killcount: " + _entityKillCounts[i];
+
         }
     }
     public void ConfigPlayer(int number)
@@ -138,6 +172,8 @@ public class GameUI_Manager : MonoBehaviour
         }
 
         gameManager.StartGame();
+        gameTimePassed = gameTime;
+        StartCoroutine(GameTimesUp(gameTime));
     }
     public GameState GetGameState()
     {
@@ -147,4 +183,12 @@ public class GameUI_Manager : MonoBehaviour
     {
         return teamSelectButtonTexts;
     }
+    private IEnumerator GameTimesUp( float _gameTime)
+    {
+        yield return new WaitForSeconds(_gameTime);
+        gameManager.GameOver();
+        mainCamera.SetActive(true);
+        StopAllCoroutines();
+    }
+
 }

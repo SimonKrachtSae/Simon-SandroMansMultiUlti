@@ -8,6 +8,9 @@ public class Bullet : MonoBehaviourPun, IPunObservable
     private int entityID;
     private float damage;
 	public Team Team { get => entityID < 2 ? Team.A : Team.B; }
+    void Start()
+    {
+    }
 
 	public void SetPlayer(int _entityID)
     {
@@ -22,7 +25,7 @@ public class Bullet : MonoBehaviourPun, IPunObservable
             if (_entity.Team != Team)
             {
 
-                _entity.DealDamage(20);
+                _entity.DealDamage(entityID,20);
             }
         }
 

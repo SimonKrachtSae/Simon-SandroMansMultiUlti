@@ -6,6 +6,7 @@ using System;
 
 public class EntityBase : MonoBehaviourPun, IPunObservable
 {
+    private GameManager gameManager;
     private string plName;
     public string PlayerName { get => plName; protected set => SetName(value); }
   
@@ -30,12 +31,14 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
 	private void Awake()
 	{
-		GameUI_Manager.Instance.GameManager.activePlayers.Add(this);
+        gameManager = GameUI_Manager.Instance.GameManager;
+		gameManager.activePlayers.Add(this);
+        GameUI_Manager.Instance.SetGameState(GameState.Running);
 	}
 
 	private void OnDestroy()
 	{
-		GameUI_Manager.Instance.GameManager.activePlayers.Remove(this);
+		gameManager.activePlayers.Remove(this);
 	}
 
 	protected void SetName(string value)
@@ -71,18 +74,18 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
         }
     }
 
-    public void DealDamage(float damage)
+    public void DealDamage(int _otherId, float _damage)
     {
-        photonView.RPC("RPC_DealDamage", RpcTarget.All, damage);
-
+        photonView.RPC("RPC_DealDamage", RpcTarget.All,_otherId, _damage);
         if (healthBar != null)
         {
+            
             SetPlayerHealth(health);
         } 
     }
 
     [PunRPC]
-    public void RPC_DealDamage(float damage)
+    public void RPC_DealDamage(int _otherId,float damage)
     {
         health -= damage;
         if (!photonView.IsMine)
@@ -92,9 +95,9 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
         if (health <= 0)
         {
-            GameUI_Manager.Instance.GameManager.EntityDead(ID);
+            gameManager.EntityDead(ID);
 
-            //GameUI_Manager.Instance.MainCamera.SetActive(true);
+            gameManager.SetKillCount(_otherId);
 
             PhotonNetwork.Destroy(this.gameObject);
         }
