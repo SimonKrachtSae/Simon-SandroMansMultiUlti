@@ -28,6 +28,8 @@ public class PlayerController : EntityBase
     }
     private void Update()
     {
+        RegenerateHealth();
+
         pointPos = gunPoint.transform.position;
         if(photonView.IsMine)
         {

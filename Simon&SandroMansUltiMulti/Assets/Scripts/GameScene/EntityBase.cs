@@ -8,7 +8,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 {
     protected GameManager gameManager;
     protected string plName;
-    public string PlayerName { get => plName; protected set => SetName(value); }
+    public string EntityName { get => plName; set => SetName(value); }
   
     protected int id;
     public int ID { get => id; }
@@ -17,7 +17,8 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 	[SerializeField] protected GameObject gunPoint;
 	[SerializeField] protected float shootSpeed;
 
-	protected float health = 100f;
+    protected float health;
+    protected float maxHealth = 100f;
     [SerializeField] private HealthBar healthBar;
 
     public float Health { get => health; }
@@ -28,6 +29,9 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     [SerializeField] private protected float moveForce = 3;
     [SerializeField] protected ParticleSystem hitParticles;
 
+    protected ViewCone viewCone;
+    protected EntityBase targetEntity;
+    protected NPCstate npcState;
 
 
     private void Awake()
@@ -35,6 +39,7 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
         gameManager = GameUI_Manager.Instance.GameManager;
 		gameManager.activeEntities.Add(this);
         GameUI_Manager.Instance.SetGameState(GameState.Running);
+        health = maxHealth;
 	}
 
 	private void OnDestroy()
@@ -100,6 +105,22 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
 
             PhotonNetwork.Destroy(this.gameObject);
         }
+        if (EntityName == "NPC")
+        {
+            for(int i = 0; i < gameManager.activeEntities.Count; i++)
+            {
+                if(gameManager.activeEntities[i] != null)
+                {
+                    if(gameManager.activeEntities[i].ID == _otherId)
+                    {
+                        targetEntity = gameManager.activeEntities[i];
+                        viewCone.TargetObject = gameManager.activeEntities[i].gameObject;
+                        npcState = NPCstate.Chase;
+                    }
+                }
+
+            }
+        }
     }
 
     public void SetPlayerHealth(float health)
@@ -120,7 +141,17 @@ public class EntityBase : MonoBehaviourPun, IPunObservable
     {
         hitParticles.Play();
     }
+    protected void RegenerateHealth()
+    {
+        if (health < maxHealth -1)
+        {
+            health += 10 * Time.fixedDeltaTime;
 
+            if (healthBar == null)
+                return;
+            SetPlayerHealth(health);
+        }
+    }
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 

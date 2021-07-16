@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviourPun, IPunObservable
         GameObject _NPC_Obj = PhotonNetwork.Instantiate("NPC", CustomRoom.Instance.SpawnPoints[_id].position, Quaternion.identity);
         NPC _NPC_Script = _NPC_Obj.GetComponent<NPC>();
         _NPC_Script.SetID(_id);
+        _NPC_Script.EntityName = "NPC";
     }
     public void RemovePlayerThatLeft()
     {

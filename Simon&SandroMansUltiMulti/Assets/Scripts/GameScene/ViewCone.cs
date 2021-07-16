@@ -29,6 +29,7 @@ public class ViewCone : MonoBehaviour
 			return;
 		}
 
+
 		angleToTarget = AngleBetween(transform.position, targetObject.transform.position);
 		if (angleToTarget <= 45)
 		{

@@ -7,9 +7,6 @@ using Photon.Realtime;
 
 public class NPC : EntityBase
 {
-	private NPCstate npcState;
-	private ViewCone viewCone;
-	private EntityBase targetEntity;
 	private NavMeshAgent agent;
 	private Vector3 targetPos;
 	public bool destroy;
@@ -25,8 +22,8 @@ public class NPC : EntityBase
 	
 	private void Update()
 	{
-
-		CheckForPlayersInRange();
+		RegenerateHealth();
+		CheckForEntitiesInRange();
 
 		switch (npcState)
 		{
@@ -101,13 +98,13 @@ public class NPC : EntityBase
 		targetPos = new Vector3(rndX, 0, rndZ);
 	}
 
-	private void CheckForPlayersInRange()
+	private void CheckForEntitiesInRange()
 	{
 		for (int i = 0; i < gameManager.activeEntities.Count; i++)
 		{
 			if(gameManager.activeEntities[i] != null)
             {
-				if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 30)
+				if ((gameManager.activeEntities[i].transform.position - transform.position).magnitude < 50)
 				{
 					if (gameManager.activeEntities[i].Team != Team)
 					{
